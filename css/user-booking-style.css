@@ -1,0 +1,90 @@
+body {
+	background: #F5F5F5;
+}
+.nextButton {
+	margin-top: 20px;
+}
+.form-inline {
+	margin-top: 50px;
+}
+.form-group {
+	margin-left: 260px;
+}
+.table-responsive {
+	margin-top: 50px;
+}
+.bookingSeat,
+.booked_list,
+.seatBox {
+	background: #ffffff;
+	box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	padding: 40px;
+	margin: 2em;
+	border-radius: 10px;
+	display: inline-block;
+}
+#screen {
+	width: 200px;
+	text-align: center;
+	float:right;
+	margin: 0 auto;
+	background-color:rgb(230, 222, 222);
+}
+#table-screen {
+	border-collapse: collapse;
+}
+#table-screen td,
+th,
+tr {
+	padding: 8px 0px;
+	text-align: center;
+}
+.bookingSeat select {
+	width: 100% !important;
+}
+.bookingSeat .form-group {
+	margin-left: 0px;
+}
+.screen-map {
+	margin-top: 10px;
+	margin-bottom: 30px;
+	text-align: center;
+}
+.screen-map img {
+	margin-right: 15px;
+}
+.booked-seat {
+	margin-left: 4px;
+	width: 25px;
+	content: url('../img/booked.png');
+}
+.empty-seat {
+	cursor: pointer;
+	width: 25px;
+	content: url('../img/available.png');
+}
+.selected-seat {
+	cursor: pointer;
+	content: url('../img/selected.png');
+	width: 25px;
+}
+.space {
+	width:25px;
+}
+tr {
+	height: 50px;
+}
+.message {
+	font-size: 14px;
+	color: #ff0000;
+	font-family: sans-serif;
+}
+.labelContent  {
+	position: absolute;
+	z-index: 1;
+	background-color: white;
+	border:1px solid #bebebe;
+	padding: 1%;
+  
+}
