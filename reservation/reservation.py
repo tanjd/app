@@ -60,7 +60,6 @@ def sortData(data):
 
         start_hour = start.hour
         end_hour = end.hour
-        print(start_hour, end_hour)
         for i in range(len(timeList)):
             if timeList[i]["x"] == start_hour:
                 for y in range(i, i + (end_hour - start_hour)):

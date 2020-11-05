@@ -1,0 +1,9 @@
+# In .dockerignore
+.dockerignore
+reservation
+library
+user
+.gitattributes
+create_dbs.sh
+run_services.sh
+requirement.txt
