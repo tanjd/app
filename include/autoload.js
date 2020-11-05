@@ -78,7 +78,7 @@ async function fetchData(method = "", url = "", data = {},) {
         try {
             var url = new URL(url)
             url.search = new URLSearchParams(data).toString();
-            console.log(url);
+            // console.log(url);
             const response = await fetch(url, {
                 method: method, // *GET, POST, PUT, DELETE, etc.
                 mode: "cors", // no-cors, *cors, same-origin
@@ -143,10 +143,13 @@ function adminPageLoad() {
         const user = JSON.parse(userCookie);
         if (user.role == "admin") {
             let pathName = window.location.pathname;
-            if (pathName == "/admin_home.php") {
+
+            pathArray = pathName.split("/")
+            pathName = pathArray[pathArray.length - 1]
+            if (pathName == "admin_home.php") {
                 document.getElementById("nav-item-home").className = "nav-link active";
                 document.getElementById("nav-item-dashboard").className = "nav-link";
-            } else if (pathName == "/admin_dashboard.php") {
+            } else if (pathName == "admin_dashboard.php") {
                 document.getElementById("nav-item-home").className = "nav-link";
                 document.getElementById("nav-item-dashboard").className = "nav-link active";
             }
@@ -156,9 +159,9 @@ function adminPageLoad() {
             }
             fetchData('GET', userHost + '/get_user/', getData)
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     if (data.status == "fail") {
-                        console.log(data.message);
+                        //console.log(data.message);
                         //displayErrorMessage(data.message);
                     } else if (data.status == "success") {
                         // console.log("success");
@@ -208,6 +211,6 @@ function navbar2Load() {
                         document.getElementById("userName").innerText = name;
                     }
                 });
-        } 
+        }
     }
 }

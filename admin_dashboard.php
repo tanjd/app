@@ -298,6 +298,7 @@ require_once 'template/admin_head.php';
         ?>
     </div>
 </body>
+<script src="dist/js/pages/dashboard.js"></script>
 
 <script>
     window.addEventListener('load', adminPageLoad);
