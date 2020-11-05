@@ -1,10 +1,3 @@
-/*
- * Author: Abdullah A Almsaeed
- * Date: 4 Jan 2014
- * Description:
- *      This is a demo file used only for the main dashboard (index.html)
- **/
-
 $(function () {
 
   'use strict'
@@ -20,11 +13,11 @@ $(function () {
   $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
 
   // jQuery UI sortable for the todo list
-    $('.todo-list').sortable({
-      placeholder         : 'sort-highlight',
-      handle              : '.handle',
-      forcePlaceholderSize: true,
-      zIndex              : 999999
+  $('.todo-list').sortable({
+    placeholder: 'sort-highlight',
+    handle: '.handle',
+    forcePlaceholderSize: true,
+    zIndex: 999999
   })
   /* Chart.js Charts */
   // Sales chart
@@ -249,47 +242,9 @@ $(function () {
       }
     });
 
-
-
-
-  // Donut Chart
-  // var pieChartCanvas = $('#sales-chart-canvas').get(0).getContext('2d')
-  // var pieData        = {
-  //   labels: [
-  //       'Instore Sales',
-  //       'Download Sales',
-  //       'Mail-Order Sales',
-  //   ],
-  //   datasets: [
-  //     {
-  //       data: [30,12,20],
-  //       backgroundColor : ['#f56954', '#00a65a', '#f39c12'],
-  //     }
-  //   ]
-  // }
-  // var pieOptions = {
-  //   legend: {
-  //     display: false
-  //   },
-  //   maintainAspectRatio : false,
-  //   responsive : true,
-  // }
-  //Create pie or douhnut chart
-  // You can switch between pie and douhnut using the method below.
-  // var pieChart = new Chart(pieChartCanvas, {
-  //   type: 'doughnut',
-  //   data: pieData,
-  //   options: pieOptions
-  // });
-
-
   var lkcCapacityChartCanvas = $('#lkcCapacity-chart').get(0).getContext('2d');
   var kgcCapacityChartCanvas = $('#kgcCapacity-chart').get(0).getContext('2d');
-  //$('#revenue-chart').get(0).getContext('2d');
-  // {
-  //   data: [700,500,400,600,300,100],
-  //   backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-  // }
+
 
   fetchData('GET', reservationHost + '/get_capacity_by_school/', getData)
     .then(data => {
@@ -299,7 +254,7 @@ $(function () {
         // console.log(data.message)
         displayErrorMessage(data.message);
       } else if (capacity_data.status == "success") {
-        console.log(capacity_data.capacity);
+        // console.log(capacity_data.capacity);
         for (let capacity of capacity_data.capacity) {
           if (capacity.library_id == 1) {
             var lksCurrentCapacity = capacity.library_capacity
@@ -313,7 +268,7 @@ $(function () {
             {
               // borderColor: '#efefef',
               backgroundColor: ['#f56954', '#00a65a'],
-              data: [lksCurrentCapacity, 1424-lksCurrentCapacity]
+              data: [lksCurrentCapacity, 1424 - lksCurrentCapacity]
             }]
         }
         var kgcCapacityChartData = {
@@ -322,7 +277,7 @@ $(function () {
             {
               // borderColor: '#efefef',
               backgroundColor: ['#f56954', '#00a65a'],
-              data: [kgcCurrentCapacity, 1264-kgcCurrentCapacity]
+              data: [kgcCurrentCapacity, 1264 - kgcCurrentCapacity]
             }]
         }
         var capacityChartOptions = {
@@ -346,8 +301,8 @@ $(function () {
     })
 })
 
-  // The Calender
-  $('#calendar').datetimepicker({
-    format: 'L',
-    inline: true
-  })
+// The Calender
+$('#calendar').datetimepicker({
+  format: 'L',
+  inline: true
+})
