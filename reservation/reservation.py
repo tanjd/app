@@ -8,7 +8,6 @@ import csv
 import sys
 
 sys.path.insert(1, 'reservation')
-
 app = Flask(__name__)
 
 
@@ -36,13 +35,6 @@ class Reservation(db.Model):
                 "floor": self.floor, "section": self.section, "start": self.start, "end": self.end}
 
 
-def is_time_between(begin_time, end_time, check_time):
-    if begin_time < end_time:
-        return check_time >= begin_time and check_time <= end_time
-    else:  # crosses midnight
-        return check_time >= begin_time or check_time <= end_time
-
-
 def sortData(data):
     timeDict = {}
     timeList = []
@@ -64,7 +56,6 @@ def sortData(data):
             if timeList[i]["x"] == start_hour:
                 for y in range(i, i + (end_hour - start_hour)):
                     timeList[y]["y"] = timeList[y]["y"] + 1
-
     return timeList
 
 
@@ -128,7 +119,6 @@ def get_reservations_by_student():
         return_message = ({"status": "fail"})
     return return_message
 
-
 # http://localhost:5002/create_reservation/
 @app.route("/create_reservation/", methods=["POST"])
 def create_reservation():
@@ -182,21 +172,6 @@ def create_reservation_bulk():
                             "message": "An error occurred creating reservation."})
 
     return jsonify({"status": "success"})
-
-# # http://localhost:5002/get_reservations_by_school/?library_id=1
-# @app.route('/get_reservations_by_school_/', methods=['GET'])
-# def get_reservations_by_school():
-#     library_id = request.args.get('library_id')
-
-#     reservations = [reservation.json(
-#     ) for reservation in Reservation.query.filter_by(library_id=library_id)]
-#     if reservations:
-#         return_message = ({"status": "success",
-#                            "reservations": reservations})
-#     else:
-#         return_message = ({"status": "fail"})
-#     return return_message
-
 
 # http://localhost:5001/get_seats/
 @app.route('/get_seats/', methods=['GET'])
@@ -252,7 +227,6 @@ def get_seats_by_library_floor_section():
         return_message = ({"status": "fail"})
     return jsonify(return_message)
 
-
 # http://localhost:5002/get_reservations_data_by_school/?library_id=1
 @app.route('/get_reservations_data_by_school/', methods=['GET'])
 def get_reservations_data_by_school():
@@ -268,22 +242,26 @@ def get_reservations_data_by_school():
         return_message = ({"status": "fail"})
     return return_message
 
+# http://localhost:5002/remove_reservation/
+@app.route('/remove_reservation', methods=['POST'])
+def remove_reservation():
+    data = request.get_json()
+    reservation_id = data['reservation_id']
+    try:
+        Reservation.query.filter(
+            Reservation.id == reservation_id).delete()
+        db.session.commit()
+    except:
+        return jsonify({"status": "fail",
+                        "message": "An error occurred in deleting reservation."})
+    return jsonify({"status": "success"})
 
 # http://localhost:5002/get_capacity_by_school/
 @app.route('/get_capacity_by_school/', methods=['GET'])
 def get_capacity_by_school():
-    # library_id = request.args.get('library_id')
     datetime_now = datetime.now()
     datetime_now = (datetime_now.strftime("%Y-%m-%d %H:%M:%S"))
-    # , "start" > datetime_now library_id = library_id,  Invoice.invoicedate >= date.today()
     try:
-        # reservations = [reservation.json(
-        # ) for reservation in Reservation.query.filter(Reservation.library_id == library_id, Reservation.start <= datetime_now, Reservation.end >= datetime_now)]
-        # return_message = ({"status": "success",
-        #                    "reservations": reservations})
-        # # library_capacity = Reservation.query.filter(
-        # #     Reservation.library_id == 1, Reservation.start <= datetime_now, Reservation.end >= datetime_now).count()
-        # print(reservations)
         capacity_data = []
         for i in range(1, 3):
             library_capacity = Reservation.query.filter(
