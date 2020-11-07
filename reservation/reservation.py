@@ -243,7 +243,7 @@ def get_reservations_data_by_school():
     return return_message
 
 # http://localhost:5002/remove_reservation/
-@app.route('/remove_reservation', methods=['POST'])
+@app.route('/remove_reservation/', methods=['POST'])
 def remove_reservation():
     data = request.get_json()
     reservation_id = data['reservation_id']
