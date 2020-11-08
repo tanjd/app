@@ -1,6 +1,7 @@
 //if it is not a user, this page would not be run.
 var userCookie = getCookie('user');
 if (userCookie != "") {
+    var library;
     const user = JSON.parse(userCookie);
     var showBookings = document.getElementById("showBookings");
     if (showBookings !== null) {
@@ -41,7 +42,7 @@ if (userCookie != "") {
                             if (typeof reservationArr !== "undefined"){
                                 var html_str = "";
                                 for (reservation of reservationArr){
-                                    var library;
+                                    //var library;
                                     var section;
                                     var library_id = reservation.library_id;
                                     for (let el of libArr){
@@ -64,12 +65,14 @@ if (userCookie != "") {
                                     html_str += `<tr><td>${library}</td><td>${floor}</td><td>${section}</td><td>${seat_id}</td><td>${start}</td><td>${end}</td></tr>`
                                 }
                                 showBookedSeats.innerHTML = html_str;
+                                $('html, body').animate({ scrollTop: $('#showMe').offset().top}, 400);
                             }
                         });
                     });
-
             });
     }
+
+
     var chosenLibrary;
     var chosenFloor;
     var chosenSection;
@@ -91,7 +94,6 @@ if (userCookie != "") {
                     var library = document.getElementById("library");
                     chosenLibrary = library.value;
                     var floorsEl = document.getElementsByClassName("floors");
-                    console.log(chosenLibrary);
                     var html_str = `<label for='floor'> Select Floor:</label><select class='form-control' id='floor' required='required'><option disabled selected value>Select Floor</option>`;
                     for (let el of librariesArr){
                         if (el.id == chosenLibrary){
@@ -125,11 +127,11 @@ if (userCookie != "") {
             }
             fetchData('GET', "http://localhost:5001/get_sections_by_library_floor/",postData)
                 .then(data => {
-                    var sectionsArr = data.sections;
+                    var sectionsArr = data.sections;;
                     for (section of sectionsArr){
                         html_str += `<div class="col-sm-6 col-md-6 col-xl-6">
                                         <div class="card h-100" style="text-align:left">
-                                            <img src="../img/lib_${chosenLibrary}_lvl_${chosenFloor}/${section.img_src}"  width="20%" height="50%" class="card-img-top">
+                                            <img src="../../app/img/lib_${chosenLibrary}_lvl_${chosenFloor}/${section.img_src}"  width="20%" height="50%" class="card-img-top">
                                             <div class="card-body">
                                             <h5 class="card-title">${section.venue}</h5>
                                             <p class="card-text" style="font-weight:bold">${section.description}</p>
@@ -139,6 +141,7 @@ if (userCookie != "") {
                                     </div>`;
                     }
                     $(".area").html(html_str);
+                    $('html, body').animate({ scrollTop: $('#showMe2').offset().top}, 400);
                     var specificSections = document.getElementsByClassName("specificSections");
                     var prev_clicked;
                     for (var i = 0; i < specificSections.length; i++) {
@@ -189,7 +192,14 @@ if (userCookie != "") {
         }
         fetchData('POST', "http://localhost:5002/create_reservation/",postData)
         .then(data => {
+            var successMsg = document.getElementById("successMsg");
+            successMsg.setAttribute("class", "alert alert-success alert-dismissible fade show");
+            $('html, body').animate({ scrollTop: $('#successMsg').offset().top}, 400);
+            $("#successMsg").fadeTo(3500, 500).slideUp(500, function(){
+                $("#successMsg").slideUp(500);
+            });
             location.reload();
+
         })
     }
     document.addEventListener('DOMContentLoaded', async function() {
@@ -216,6 +226,7 @@ if (userCookie != "") {
                 }
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     selectable: true,
+                    editable: false,
                     initialView: 'timeGridWeek',
                     events: reservedTimeSlots,
                     headerToolbar: {
@@ -233,7 +244,6 @@ if (userCookie != "") {
                     },
                     slotMinTime: "09:00:00",
                     slotMaxTime: "23:00:00",
-                    editable: true,
                     timeZone: "Asia/Singapore",
                     selectAllow: function(info) {
                         var date = new Date();
@@ -291,6 +301,10 @@ if (userCookie != "") {
         proceed.addEventListener("click", continueBooking);
     }
     function continueBooking() {
+        var showMe3 = document.getElementById("showMe3");
+        var showMe4 = document.getElementById("showMe4");
+        showMe3.setAttribute("class", "alert alert-light");
+        showMe4.setAttribute("class", "alert alert-info");
         //Check parameters
         let msgBox = document.getElementsByClassName("message")[0];
         console.log(chosenFloor);
@@ -393,7 +407,7 @@ if (userCookie != "") {
                         numOfSeats += 1;
                         html_str += `<img class="empty-seat" id="seat_${numOfSeats}" /> <p class = "labelContent d-none"> seat_${numOfSeats}</p>`
                     } else if (seatMap[i][j] == 2) {
-                        html_str += `<img src = "../img/space.png" class="space"/>`
+                        html_str += `<img src = "../../app/img/space.png" class="space"/>`
                     }
                     html_str += "</td>"
                 }
@@ -478,6 +492,7 @@ if (userCookie != "") {
                                 }
                             });
                         }
+                        $('html, body').animate({ scrollTop: $('#showMe3').offset().top}, 400);
                         var bookNow = document.getElementById("bookNow");
                         bookNow.addEventListener("click", confirmBooking);
                     });
@@ -485,12 +500,15 @@ if (userCookie != "") {
         }
     }
     function confirmBooking() {
+        var showMe5 = document.getElementById("showMe5");
+        var showMe6 = document.getElementById("showMe6");
+        showMe5.setAttribute("class", "alert alert-light");
+        showMe6.setAttribute("class", "alert alert-info");
         var selectedSeat = document.getElementsByClassName("selected-seat");
         var selectedSeatEl = selectedSeat[0];
         selectedSeatEl = selectedSeatEl.id.slice(5,);
         var seat_id = selectedSeatEl;
         var start = finalReservation.startStr.slice(0,19); //2020-10-24T16:30:00
-        console.log(start);
         var end = finalReservation.endStr.slice(0,19);
         var startDT = new Date(start);
         var startString = startDT.toString().slice(0,3) + "," + startDT.toString().slice(3, 21);
@@ -534,8 +552,10 @@ if (userCookie != "") {
                             </div>
                         </div>`;
         confirmBooking.innerHTML = html_str;
+        $('html, body').animate({ scrollTop: $('#showMe5').offset().top}, 400);
         var confirmBtn = document.getElementById("confirmBookingBtn");
         confirmBtn.addEventListener("click", function () {
+
             create_reservation(user.user_id, chosenLibrary, seat_id, chosenFloor, chosenSection, start , end);
         })
     }

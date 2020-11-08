@@ -16,6 +16,7 @@ require_once 'template/head.php';
 </head>
 
 <body>
+
     <?php
     if (isset($_COOKIE['user'])) {
         require_once 'template/navbar2.php';
@@ -25,15 +26,19 @@ require_once 'template/head.php';
 
     ?>
     <div class="container">
-        <div class="row d-flex justify-content-center">
-            <h1>Seats Booking</h1>
-        </div>
         <div class="row d-flex justify-content-center" id="showBookings">
+        </div>
+        <div class="alert alert-light" role="alert" id = "showMe">
+            Scroll up to see your past bookings.
+        </div>
+        <div class="alert alert-info" role="alert" id = "showMe1">
+            Scroll up to see your past bookings. Proceed to book by selecting time slot, library, floor and area.
         </div>
         <div class="row d-flex justify-content-center">
             <form class='bookingSeat'>
                 <div id='calendar'></div>
-                <div class="row">
+                </br>
+                <div class="row" id = "showMe2">
                     <div class="col-md-6">
                         <div class="form-group libraries">
                         </div>
@@ -63,9 +68,27 @@ require_once 'template/head.php';
                 </div>
             </form>
         </div>
+        <div class="alert alert-light d-none" role="alert" id = "showMe3">
+            Scroll up to see your past bookings.
+        </div>
+        <div class="alert alert-info d-none" role="alert" id = "showMe4">
+            Choose your seat and scroll to click "Book Now" after finished selecting.
+        </div>
         <div class="row d-flex justify-content-center" id="showSeats">
         </div>
+        <div class="alert alert-light d-none" role="alert" id = "showMe5">
+            Scroll up to see your past bookings.
+        </div>
+        <div class="alert alert-info d-none" role="alert" id = "showMe6">
+            Check your seat selection and click "Confirm Booking" to officially.
+        </div>
         <div class="row d-flex justify-content-center" id="confirmBooking">
+        </div>
+        <div class="alert alert-success alert-dismissible fade show d-none" role="alert" id = "successMsg">
+            Your booking request has processed successfully!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
 </body>
