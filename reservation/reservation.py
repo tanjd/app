@@ -280,6 +280,36 @@ def get_capacity_by_school():
                         "message": "An error occurred retrieving data."})
     return return_message
 
+# http://localhost:5002/get_reservation_count_by_library_floor/
+@app.route('/get_reservation_count_by_library_floor/', methods=['GET'])
+def get_reservation_count_by_library_floor():
+    user_data = request.get_json()
+    library_id = user_data['library_id']
+    floor = user_data['floor']
+
+    start = user_data['start']
+    start = datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
+    end = user_data['end']
+    end = datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
+
+    try:
+        reservation_count_data = []
+        for i in range(1, 5):
+            reservation_count = Reservation.query.filter(
+                Reservation.library_id == library_id, Reservation.floor == floor, Reservation.section == i, Reservation.start >= start, Reservation.end <= end).count()
+            reservation_count = {
+                "section": i,
+                "reservation_count": reservation_count
+            }
+            reservation_count_data.append(reservation_count)
+        return_message = ({"status": "success",
+                           "reservation_count": reservation_count_data})
+    except Exception as error:
+        db.session.rollback()
+        print(error)
+        return jsonify({"status": "fail",
+                        "message": "An error occurred retrieving data."})
+    return return_message
 
 @app.route('/load_reservation', methods=['GET'])
 def load_reservation():

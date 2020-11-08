@@ -147,6 +147,7 @@ def get_seats_by_library_floor_section():
         return_message = ({"status": "fail"})
     return jsonify(return_message)
 
+
 # http://localhost:5001/get_sections/
 @app.route('/get_sections/', methods=['GET'])
 def get_sections():
