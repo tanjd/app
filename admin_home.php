@@ -110,7 +110,9 @@ require_once 'template/admin_head.php';
                                                 </p>
                                             </div>
                                         </p>
-                                        <button type="button" class="btn btn-danger btn-sm nextButton" id="continueBooking">Confirm</button>
+                                        <div id="confirmBtn">
+                                            <button type="button" class="btn btn-danger btn-sm nextButton" id="continueBooking">Confirm</button>
+                                        </div>
                                         <div class="row d-none" id="loading">
                                             <div class="spinner-border text-dark" role="status">
                                                 <span class="sr-only">Loading...</span>
