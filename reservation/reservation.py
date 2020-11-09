@@ -89,6 +89,46 @@ def get_reservations_by_school():
         return_message = ({"status": "fail"})
     return return_message
 
+# http://localhost:5002/get_reservations_data_by_library_floor/?library_id=1&floor=2
+@app.route('/get_reservations_data_by_library_floor/', methods=['GET'])
+def get_reservations_data_by_library_floor():
+    library_id = request.args.get('library_id')
+    floor = request.args.get('floor')
+
+    try:
+        reservation_data = []
+        for i in range(1, 5):
+            reservations = [reservation.json(
+            ) for reservation in Reservation.query.filter_by(library_id=library_id, floor=floor,section=i)]
+            sections_reservations = {
+                "section": i,
+                "sections_reservations": reservations
+            }
+            reservation_data.append(sections_reservations)
+        return_message = ({"status": "success",
+                           "sections_reservations": reservation_data})
+    except Exception as error:
+        db.session.rollback()
+        print(error)
+        return jsonify({"status": "fail",
+                        "message": "An error occurred retrieving data."})
+    return return_message
+
+# http://localhost:5002/get_reservations_by_library_floor/?library_id=1&floor=2
+@app.route('/get_reservations_by_library_floor/', methods=['GET'])
+def get_reservations_by_library_floor():
+    library_id = request.args.get('library_id')
+    floor = request.args.get('floor')
+
+    reservations = [reservation.json(
+    ) for reservation in Reservation.query.filter_by(library_id=library_id, floor=floor)]
+    if reservations:
+        return_message = ({"status": "success",
+                           "reservations": reservations})
+    else:
+        return_message = ({"status": "fail"})
+    return return_message
+
 # http://localhost:5002/get_reservations_by_library_floor_section/?library_id=1&floor=2&section=1
 @app.route('/get_reservations_by_library_floor_section/', methods=['GET'])
 def get_reservations_by_library_floor_section():
@@ -212,7 +252,7 @@ def get_seats_by_library_floor():
         return_message = ({"status": "fail"})
     return jsonify(return_message)
 
-# http://localhost:5001/get_seats_by_library_floor_section/?library_id=1&floor=1&section=1
+# http://localhost:5001/get_seats_by_library_floor_section/?library_id=1&floor=2&section=1
 @app.route('/get_seats_by_library_floor_section/', methods=['GET'])
 def get_seats_by_library_floor_section():
     library_id = request.args.get('library_id')
@@ -283,13 +323,14 @@ def get_capacity_by_school():
 # http://localhost:5002/get_reservation_count_by_library_floor/
 @app.route('/get_reservation_count_by_library_floor/', methods=['GET'])
 def get_reservation_count_by_library_floor():
-    user_data = request.get_json()
-    library_id = user_data['library_id']
-    floor = user_data['floor']
 
-    start = user_data['start']
+    library_id = request.args.get('library_id')
+    floor = request.args.get('floor')
+
+    start = request.args.get('start')
+    datetime_start = datetime()
     start = datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
-    end = user_data['end']
+    end = request.args.get('end')
     end = datetime.strptime(end, '%Y-%m-%dT%H:%M:%S')
 
     try:

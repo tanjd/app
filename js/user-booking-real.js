@@ -122,63 +122,76 @@ if (userCookie != "") {
             var section;
             var start = finalReservation.startStr.slice(0,19);
             var end = finalReservation.endStr.slice(0,19);
-            postData = {
+            var start = finalReservation.startStr.slice(0,19);
+            postData =  {
                 "library_id": chosenLibrary,
-                "floor":chosenFloor,
-                "start": start,
-                "end": end
+                "floor": chosenFloor,
             }
-            fetchData('GET', "http://localhost:5002/get_reservation_count_by_library_floor/",postData)
-                .then(data => {
-                    var reservationCountArr = data.reservation_count;
-                    console.log(reservationCountArr);
-                    postData = {
-                        "library_id": chosenLibrary,
-                        "floor":chosenFloor
-                    }
-                    fetchData('GET', "http://localhost:5001/get_sections_by_library_floor/",postData)
-                    .then(data => {
-                        var sectionsArr = data.sections;
-                        for (section of sectionsArr){
-                            postData = {
-                                "library_id": chosenLibrary,
-                                "floor":chosenFloor,
-                                "section": section.section
+            fetchData('GET', "http://localhost:5002/get_reservations_by_library_floor/",postData)
+                .then(data => { 
+                    var reservations = data.reservations
+                    if (typeof reservations !== "undefined"){
+                        var section1 = [];
+                        var section2 = [];
+                        var section3 = [];
+                        var section4 = [];
+                        for (reservation of reservations){
+                            let dateS = reservation.start;
+                            let dateE = reservation.end;
+                            let resDateS = new Date(dateS);
+                            let resDateE = new Date(dateE);
+                            let newDateS = new Date(start);
+                            let newDateE = new Date(end);
+                            if (resDateS >= newDateS && resDateE <= newDateE ) {
+                                if (reservation.section == 1) {
+                                    section1.push(reservation.seat_id);
+                                } else if (reservation.section == 2) {
+                                    section2.push(reservation.seat_id);
+                                } else if (reservation.section == 3) {
+                                    section3.push(reservation.seat_id);
+                                } else {
+                                    section4.push(reservation.seat_id);
+                                }
                             }
-                            fetchData('GET', "http://localhost:5001/get_seats_by_library_floor_section/",postData)
-                                .then(data => {
-                                    var seatsArr = data.seats;
-                                    var sectionMaxCap = seatsArr.length;
-                                    console.log(start);
-                                    console.log(end);
-                                    console.log(sectionMaxCap);
-                                    /*
-                                    postData = {
-                                        "library_id": chosenLibrary,
-                                        "floor":chosenFloor,
-                                        "section": section.section,
-                                        "start": start,
-                                        "end": end
-                                    }*/
-    
-                                            console.log('hello');
-                                            var reservation_count = data.reservation_count;
-                                            var leftOver = sectionMaxCap - reservation_count;
+                        }
+                        postData = {
+                            "library_id": chosenLibrary,
+                            "floor":chosenFloor,
+                            "section": 1
+                        }
+                        fetchData('GET', "http://localhost:5001/get_seats_by_library_floor_section/",postData)
+                            .then(data => {
+                                var seatsArr = data.seats;
+                                var sectionMaxCap = seatsArr.length;
+                                if (seatsArr[0].section == 1){
+                                    var reservation_count = section1.length;
+                                } else if (seatsArr[0].section == 2){
+                                    var reservation_count = section2.length;
+                                } else if (seatsArr[0].section == 3){
+                                    var reservation_count = section3.length;
+                                } else {
+                                    var reservation_count = section4.length;
+                                }
+                                var leftOver = sectionMaxCap - reservation_count;
+                                fetchData('GET', "http://localhost:5001/get_sections_by_library_floor/",postData)
+                                    .then(data => {
+                                        var sectionsArr = data.sections;
+                                        for (section of sectionsArr){
                                             if (leftOver < 1) {
                                                 html_str += `<div class="col-sm-6 col-md-6 col-xl-6">
                                                                 <div class="card h-100" style="text-align:left">
-                                                                    <img src="../../app/img/lib_${chosenLibrary}_lvl_${chosenFloor}/${section.img_src}"  width="20%" height="50%" class="card-img-top">
+                                                                    <img src="../../app/img/lib_${chosenLibrary}_lvl_${chosenFloor}/${section.img_src}" style="filter:grayscale(100%)" width="20%" height="50%" class="card-img-top">
                                                                     <div class="card-body">
                                                                     <h5 class="card-title">${section.venue}</h5>
                                                                     <p class="card-text" style="font-weight:bold">${section.description}</p>
-                                                                    <button type="button" class="btn btn-primary specificSections" id="${section.section}">Select</button>
+                                                                    <button type="button" disabled class="btn btn-primary specificSections" id="${section.section}">Select</button>
                                                                     </div>
                                                                 </div>
                                                             </div>`;
                                             } else {
                                                 html_str += `<div class="col-sm-6 col-md-6 col-xl-6">
                                                                 <div class="card h-100" style="text-align:left">
-                                                                    <img src="../../app/img/lib_${chosenLibrary}_lvl_${chosenFloor}/${section.img_src}"  width="20%" height="50%" class="card-img-top">
+                                                                    <img src="../../app/img/lib_${chosenLibrary}_lvl_${chosenFloor}/${section.img_src}" width="20%" height="50%" class="card-img-top">
                                                                     <div class="card-body">
                                                                     <h5 class="card-title">${section.venue}</h5>
                                                                     <p class="card-text" style="font-weight:bold">${section.description}</p>
@@ -187,50 +200,47 @@ if (userCookie != "") {
                                                                 </div>
                                                             </div>`;
                                             }
-    
-                                });
-    
-                        }
-                        $(".area").html(html_str);
-                        $('html, body').animate({ scrollTop: $('#showMe2').offset().top}, 400);
-                        var specificSections = document.getElementsByClassName("specificSections");
-                        var prev_clicked;
-                        for (var i = 0; i < specificSections.length; i++) {
-                            //Button reactions. For toggling between clicked or not clicked.
-                            specificSections[i].addEventListener('click', function(){
-                                chosenSection = '';
-                                $("#showSeats").html("");
-                                //unselect
-                                if (prev_clicked == this) {
-                                    prev_clicked = "undefined";
-                                    this.childNodes[0].nodeValue = "Select";
-                                    this.setAttribute("class", "btn btn-primary specificSections");
-                                    for (let i = 0; i < specificSections.length; i++) {
-                                        if (specificSections[i] !== this) {
-                                            console.log(specificSections[i].parentElement.parentElement.firstElementChild);
-                                            specificSections[i].parentElement.parentElement.firstElementChild.style.filter = "grayscale(0%)";
                                         }
-                                    }
-                                } else {
-                                    this.childNodes[0].nodeValue = "Selected";
-                                    this.setAttribute("class", "btn btn-secondary specificSections");
-                                    this.parentElement.parentElement.firstElementChild.style.filter = "grayscale(0%)";
-                                    for (let i = 0; i < specificSections.length; i++) {
-                                        if (specificSections[i] !== this) {
-                                            specificSections[i].parentElement.parentElement.firstElementChild.style.filter = "grayscale(100%)";
-                                            specificSections[i].childNodes[0].nodeValue = "Select";
-                                            specificSections[i].setAttribute("class", "btn btn-primary specificSections");
+                                        $(".area").html(html_str);
+                                        $('html, body').animate({ scrollTop: $('#showMe2').offset().top}, 400);
+                                        var specificSections = document.getElementsByClassName("specificSections");
+                                        var prev_clicked;
+                                        for (var i = 0; i < specificSections.length; i++) {
+                                            //Button reactions. For toggling between clicked or not clicked.
+                                            specificSections[i].addEventListener('click', function(){
+                                                chosenSection = '';
+                                                $("#showSeats").html("");
+                                                //unselect
+                                                if (prev_clicked == this) {
+                                                    prev_clicked = "undefined";
+                                                    this.childNodes[0].nodeValue = "Select";
+                                                    this.setAttribute("class", "btn btn-primary specificSections");
+                                                    for (let i = 0; i < specificSections.length; i++) {
+                                                        if (specificSections[i] !== this) {
+                                                            specificSections[i].parentElement.parentElement.firstElementChild.style.filter = "grayscale(0%)";
+                                                        }
+                                                    }
+                                                } else {
+                                                    this.childNodes[0].nodeValue = "Selected";
+                                                    this.setAttribute("class", "btn btn-secondary specificSections");
+                                                    this.parentElement.parentElement.firstElementChild.style.filter = "grayscale(0%)";
+                                                    for (let i = 0; i < specificSections.length; i++) {
+                                                        if (specificSections[i] !== this) {
+                                                            specificSections[i].parentElement.parentElement.firstElementChild.style.filter = "grayscale(100%)";
+                                                            specificSections[i].childNodes[0].nodeValue = "Select";
+                                                            specificSections[i].setAttribute("class", "btn btn-primary specificSections");
+                                                        }
+                                                    }
+                                                    prev_clicked = this;
+                                                    chosenSection = this.id;
+                                                }
+                                            });
                                         }
-                                    }
-                                    prev_clicked = this;
-                                    chosenSection = this.id;
-                                }
+                                    });
                             });
-                        }
-                    });
+                    }
                 });
-
-        });
+            });
     }
     var finalReservation;
     function create_reservation(student_id, library_id, seat_id, floor, section, start, end){
@@ -250,9 +260,8 @@ if (userCookie != "") {
             $('html, body').animate({ scrollTop: $('#successMsg').offset().top}, 400);
             $("#successMsg").fadeTo(3500, 500).slideUp(500, function(){
                 $("#successMsg").slideUp(500);
+                location.reload();
             });
-            location.reload();
-
         })
     }
     document.addEventListener('DOMContentLoaded', async function() {
@@ -489,7 +498,6 @@ if (userCookie != "") {
                                 }
                             }
                         }
-                        console.log(bookedSeats);
                         for (var bookedSeat of bookedSeats){
                             var elSeat = "seat_" + bookedSeat;
                             var bookSeat = document.getElementById(elSeat);

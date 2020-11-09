@@ -88,20 +88,6 @@ tr {
 	padding: 1%;
   
 }
-#myDIV {
-	height: 250px;
-	width: 250px;
-	overflow: auto;
-	background: green;
-  }
-  
-  #content {
-	margin:500px;
-	height: 800px;
-	width: 2000px;
-	background-color: coral;
-  }
-
 .alert {
 	margin-left: 1.5%;
 	width: 97%;
