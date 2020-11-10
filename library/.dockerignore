@@ -1,0 +1,8 @@
+# In .dockerignore
+.dockerignore
+create_seat_csv.py
+create_db.py
+library.csv
+seat.csv
+section.csv
+__pycache__

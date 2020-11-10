@@ -57,16 +57,16 @@ tr {
 .booked-seat {
 	margin-left: 4px;
 	width: 25px;
-	content: url('../img/booked.png');
+	content: url('../../app/img/booked.png');
 }
 .empty-seat {
 	cursor: pointer;
 	width: 25px;
-	content: url('../img/available.png');
+	content: url('../../app/img/available.png');
 }
 .selected-seat {
 	cursor: pointer;
-	content: url('../img/selected.png');
+	content: url('../../app/img/selected.png');
 	width: 25px;
 }
 .space {
@@ -87,4 +87,16 @@ tr {
 	border:1px solid #bebebe;
 	padding: 1%;
   
+}
+.alert {
+	margin-left: 1.5%;
+	width: 97%;
+}
+#showMe, #showMe3, #showMe5 {
+	background-color: rgb(245, 245, 245);
+	border: rgb(245, 245, 245);
+	color: rgb(245, 245, 245);
+}
+.container{
+	margin-top: 3%;
 }

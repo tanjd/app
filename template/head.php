@@ -43,7 +43,7 @@
     <style>
 
     </style>
-    <title>Hello, world!</title>
+    <title>Library Seat Reservation System</title>
 </head>
 
 <body>
