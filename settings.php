@@ -147,7 +147,7 @@ require_once 'template/head.php';
             }
             fetchData('POST',"http://localhost:5000/update_password/",postData)
             .then(data => {
-                console.log("hi");
+                location.reload();
             });
         }
 

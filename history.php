@@ -6,7 +6,7 @@ require_once 'template/head.php';
 <head>
     <style>
         .jumbotron {
-            background-image: url("../img/history.jpg");
+            background-image: url("img/history.jpg");
             background-size: cover;
             background-repeat: no-repeat;
             /* opacity: 0.7; */
@@ -39,6 +39,7 @@ require_once 'template/head.php';
 
                 <h2>Past Bookings</h2>
                 <div class="row" style="margin:20px;" id="past">
+                
                 </div>
 
             </div>
