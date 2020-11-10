@@ -1,4 +1,6 @@
 var seatsDropdownItems = document.getElementsByClassName("blockOffSelections");
+var wtf = document.getElementById("wtf");
+console.log(wtf);
 var library;
 var floor;
 var section;
@@ -308,6 +310,7 @@ picker = new Pikaday({
                         //allow choosing of seats
                         var chooseSeats = document.getElementById("chooseSeats");
                         chooseSeats.setAttribute("class", "row");
+                        console.log(chooseSeats);
                         var userCookie = getCookie('user');
                         const user = JSON.parse(userCookie);
                         var loading = document.getElementById("loading");

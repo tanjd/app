@@ -1,3 +1,13 @@
+
+function deleteBooking(id){
+    postData = {
+        "reservation_id" : id
+    }
+    fetchData('POST',"http://localhost:5002/remove_reservation/",postData)
+        .then(data => {
+            location.reload();
+        });
+}
 var userCookie = getCookie("user");
 if(userCookie !== ""){
     var user = JSON.parse(userCookie);
@@ -28,7 +38,7 @@ if(userCookie !== ""){
 
                     for (reservation of reservationArr){
                         var library;
-                        
+                        var id = reservation.id;
                         var library_id = reservation.library_id;
                         if (library_id == '1') {
                             library = "LKS";
@@ -138,7 +148,7 @@ if(userCookie !== ""){
 
                         // console.log(todayMth);
                         // console.log(startMth);
-                        var card = html_str + `<button type="button" class="btn btn-outline-danger mx-auto" id="buttonDelete" onclick="deleteBooking()">Cancel reservation</button>
+                        var card = html_str + `<button type="button" class="btn btn-outline-danger mx-auto" id="buttonDelete" onclick="deleteBooking(${id})">Cancel reservation</button>
                           
                           
                                 </div>
@@ -193,16 +203,6 @@ if(userCookie !== ""){
 
                         }
 
-                        function deleteBooking(){
-                            postData = {
-                                "user_id" : user.user_id,
-                                "id" : reservation.id
-                                }
-                                fetchData('POST',"http://localhost:5002/remove_reservation/",postData)
-                                .then(data => {
-                                    location.reload();
-                                });
-                        }
 
 
                         
