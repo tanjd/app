@@ -8,7 +8,6 @@ require_once 'template/admin_head.php';
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/timepicker@1.13.15/jquery.timepicker.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
-    
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -74,17 +73,6 @@ require_once 'template/admin_head.php';
                                                 </div>
                                             </div>
                                             </br>
-                                            
-                                            <div class="dropdown" id = "wtf">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
                                             <div class="row d-none" id="chooseSeats">
                                                 <div class="col-6">
                                                     <div class="dropdown" id="seatsDropdown">
@@ -376,14 +364,16 @@ require_once 'template/admin_head.php';
             </div>
             <!-- /.content-wrapper -->
             <?php
-            // require_once 'template/admin_footer.php';
+                require_once 'template/admin_footer.php';
             ?>
         </div>
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/timepicker@1.13.15/jquery.timepicker.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/admin-blockoff.js"></script>
+
 <script>
     window.addEventListener('load', adminPageLoad);
 
