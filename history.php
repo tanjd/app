@@ -39,7 +39,7 @@ require_once 'template/head.php';
 
                 <h2>Past Bookings</h2>
                 <div class="row" style="margin:20px;" id="past">
-                
+                <div class=""></div>
                 </div>
 
             </div>
