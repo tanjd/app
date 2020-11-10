@@ -95,7 +95,7 @@ require_once 'template/head.php';
 <script type="text/javascript" src="./include/autoload.js"></script>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js'></script>
-<script type="text/javascript" src="js/user-booking-real.js"></script>
+<script type="text/javascript" src="js/user-booking.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 </html>
