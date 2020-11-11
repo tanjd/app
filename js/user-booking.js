@@ -27,16 +27,16 @@ if (userCookie != "") {
     }
     var showBookedSeats = document.getElementById("showBookedSeats");
     if (showBookedSeats !== null) {
-        fetchData('GET', "http://localhost:5001/get_libraries/",)
+        fetchData('GET', libraryHost+"/get_libraries/",)
             .then(data => {
                 var libArr = data.libraries;
-                fetchData('GET', "http://localhost:5001/get_sections/",)
+                fetchData('GET', libraryHost+"/get_sections/",)
                     .then(data => {
                         var secArr = data.sections;
                         postData = {
                             "student_id": user.user_id,
                         }
-                        fetchData('GET', "http://localhost:5002/get_reservations_by_student/",postData)
+                        fetchData('GET', reservationHost+"/get_reservations_by_student/",postData)
                         .then(data => {
                             var reservationArr = data.reservations;
                             if (typeof reservationArr !== "undefined"){
@@ -81,7 +81,7 @@ if (userCookie != "") {
     var chosenSection;
     var libraries = document.getElementsByClassName("libraries");
     if (typeof libraries[0] !== "undefined"){
-        fetchData('GET', "http://localhost:5001/get_libraries/",)
+        fetchData('GET', libraryHost+"/get_libraries/",)
             .then(data => {
                 var librariesArr = data.libraries;
                 var html_str;
@@ -131,7 +131,7 @@ if (userCookie != "") {
                 "library_id": chosenLibrary,
                 "floor": chosenFloor,
             }
-            fetchData('GET', "http://localhost:5002/get_reservations_by_library_floor/",postData)
+            fetchData('GET', reservationHost+"/get_reservations_by_library_floor/",postData)
                 .then(data => { 
                     var reservations = data.reservations
                     if (typeof reservations !== "undefined"){
@@ -163,7 +163,7 @@ if (userCookie != "") {
                             "floor":chosenFloor,
                             "section": 1
                         }
-                        fetchData('GET', "http://localhost:5001/get_seats_by_library_floor_section/",postData)
+                        fetchData('GET', libraryHost+"/get_seats_by_library_floor_section/",postData)
                             .then(data => {
                                 var seatsArr = data.seats;
                                 var sectionMaxCap = seatsArr.length;
@@ -177,7 +177,7 @@ if (userCookie != "") {
                                     var reservation_count = section4.length;
                                 }
                                 var leftOver = sectionMaxCap - reservation_count;
-                                fetchData('GET', "http://localhost:5001/get_sections_by_library_floor/",postData)
+                                fetchData('GET', libraryHost+"/get_sections_by_library_floor/",postData)
                                     .then(data => {
                                         var sectionsArr = data.sections;
                                         for (section of sectionsArr){
@@ -257,7 +257,7 @@ if (userCookie != "") {
             "start": start,
             "end": end
         }
-        fetchData('POST', "http://localhost:5002/create_reservation/",postData)
+        fetchData('POST', reservationHost+"/create_reservation/",postData)
         .then(data => {
             var successMsg = document.getElementById("successMsg");
             successMsg.setAttribute("class", "alert alert-success alert-dismissible fade show");
@@ -274,7 +274,7 @@ if (userCookie != "") {
         postData = {
             "student_id": user.user_id
         }
-        fetchData('GET', "http://localhost:5002/get_reservations_by_student/",postData)
+        fetchData('GET', reservationHost+"get_reservations_by_student/",postData)
             .then(data => {
                 var reservations = data.reservations;
                 var reservedTimeSlots=[];
@@ -489,7 +489,7 @@ if (userCookie != "") {
                     "floor": chosenFloor,
                     "section": chosenSection
                 }
-                fetchData('GET', "http://localhost:5002/get_reservations_by_library_floor_section/",postData)
+                fetchData('GET', reservationHost+"get_reservations_by_library_floor_section/",postData)
                     .then(data => {
                         var reservations = data.reservations
                         if (typeof reservations !== "undefined"){
