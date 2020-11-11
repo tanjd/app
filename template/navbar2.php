@@ -11,7 +11,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navLinks">
-            <ul id="ul1" class="navbar-nav">
+            <ul id="ul1" class="navbar-nav text-right">
                 <li class="nav-item">
                     <a href="user_booking.php" class="nav-link">BOOKING<i class="fas fa-book-reader pl-1"></i>
                     </a>
@@ -41,13 +41,13 @@
     if (window.location.pathname == '/app/index.php') {
         document.getElementById('homepageSections').innerHTML = `<ul class="navbar-nav flex-row">
                                                                     <li class="nav-item ml-3">
-                                                                        <a class="nav-link" href="#section1">HOME</a>
+                                                                        <a class="nav-link" href="#section1">HOME<i class="fas fa-home pl-1"></i></a>
                                                                     </li>
                                                                     <li class="nav-item ml-3">
-                                                                        <a class="nav-link" href="#section2">ABOUT US</a>
+                                                                        <a class="nav-link" href="#section2">ABOUT US<i class="fas fa-users pl-1"></i></a>
                                                                     </li>
                                                                     <li class="nav-item ml-3">
-                                                                        <a class="nav-link" href="#section3">CONTACT</a>
+                                                                        <a class="nav-link" href="#section3">CONTACT<i class="fas fa-id-card pl-1"></i></a>
                                                                     </li>
                                                                 </ul>`;
     }
