@@ -80,7 +80,7 @@ require_once 'template/head.php';
             Scroll up to see your past bookings.
         </div>
         <div class="alert alert-info d-none" role="alert" id = "showMe6">
-            Check your seat selection and click "Confirm Booking" to officially.
+            Check your seat selection and click "Confirm Booking" to officially place a booking.
         </div>
         <div class="row d-flex justify-content-center" id="confirmBooking">
         </div>

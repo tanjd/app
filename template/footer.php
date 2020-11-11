@@ -1,4 +1,4 @@
-<footer class="footer mt-auto py-3">
+<footer class="footer mt-auto">
 
 </footer>
 <!-- Footer -->

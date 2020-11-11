@@ -78,12 +78,8 @@ body {
 }
 
 #lottie {
-    position: absolute;
-    width: 58%;
+    width: 92%;
     height: auto;
-    z-index: -1;
-    top: 25%;
-    left: 200px;
 }
 .intro {
     background: black;

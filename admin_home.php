@@ -45,9 +45,6 @@ require_once 'template/admin_head.php';
                                     <div class="card-header">
                                         <h5 class="m-0">Block Off Seats</h5>
                                     </div>
-                                    <!-- <div class="row">
-                                        <h5 class="card-title font-weight-bold">Block Off Seats</h5>
-                                    </div> -->
                                     <div class="card-body">
                                         <h6 class="card-title">Please select the seats to be blocked off</h6>
 
@@ -119,76 +116,7 @@ require_once 'template/admin_head.php';
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- </br> -->
-                                    <!-- <div class="row">
-                                        <div class="col-lg-6">
-                                            From (Date) <br>
-                                            <input id="datepickerFrom" class="rounded input-block-level" type="text" autocomplete="off" />
-                                        </div>
-                                        <div class="col-lg-6 d-none" id="toDate">
-                                            To (Date)<br>
-                                            <input id="datepickerTo" class="rounded input-block-level" type="text" autocomplete="off" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6" id="fromTime">
-                                            From (Time)<br>
-                                            <input id="timepickerFrom" class="rounded input-block-level" type="text" autocomplete="off" />
-                                        </div>
-                                        <div class="col-lg-6 d-none" id="toTime">
-                                            To (Time)<br>
-                                            <input id="timepickerTo" class="rounded input-block-level" type="text" autocomplete="off" />
-                                        </div>
-                                    </div>
                                     </br>
-                                    <div class="row d-none" id="chooseSeats">
-                                        <div class="col-6">
-                                            <div class="dropdown" id="seatsDropdown">
-                                                <button class="btn btn-secondary dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Choose Seats
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <button class="dropdown-item blockOffSelections" id="Odd" value="Odd">Odd Seats</button>
-                                                    <button class="dropdown-item blockOffSelections" id="Even" value="Even">Even Seats</button>
-                                                    <button class="dropdown-item blockOffSelections" id="Section" value="Section">Section</button>
-                                                    <button class="dropdown-item blockOffSelections" id="Floor" value="Floor">Floor</button>
-                                                    <button class="dropdown-item blockOffSelections" id="Library" value="Library">Library</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="dropdown" id="specificationsDropdown">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </br>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="dropdown" id="specificationsDropdown2">
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="dropdown" id="specificationsDropdown3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </br>
-                                    <div class="row">
-                                        <p class="card-text d-none" id="message">
-                                        </p>
-                                    </div> -->
-                                    </br>
-                                    <!-- <div class="row justify-content-center" id="confirmBtn">
-                                        <div class="text-center">
-                                            <button type="button" class="btn btn-danger btn-sm nextButton" id="continueBooking">Confirm</button>
-                                        </div>
-                                    </div> -->
-                                    <!-- </br>
-                                    <div class="row d-none" id="loading">
-                                        <div class="spinner-border text-dark" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                             <div class="card">
@@ -324,7 +252,7 @@ require_once 'template/admin_head.php';
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="m-0" align="center">Blocked Off Seats By You</h5>
+                                    <h5 class="m-0" align="left">Blocked Off Seats By You</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="showBlockedOff">
@@ -347,8 +275,33 @@ require_once 'template/admin_head.php';
                                     </div>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="m-0" align="left">All Reservations</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="showAllReservations">
+                                        <div class="table-responsive booked_list">
+                                            <table class="table table-striped" id="showAll">
+                                                <thead>
+                                                    <tr>
+                                                        <th>User</th>
+                                                        <th>Library</th>
+                                                        <th>Floor</th>
+                                                        <th>Section</th>
+                                                        <th>Seat</th>
+                                                        <th>Start Time</th>
+                                                        <th>End Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="showAllReservationsSeats">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- /.col-md-6 -->
-
                         </div>
                         <!-- /.row -->
 

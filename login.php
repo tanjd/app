@@ -17,7 +17,7 @@ require_once 'template/head.php';
                     <i class="fas fa-lock"></i>
                     <input type="password" name="passwordInput" id="inputPassword" placeholder="Password" />
                 </div>
-                <a href="#">Forgot Password?</a>
+                <a href="index.php">Back to Homepage</a>
                 <input type="submit" id="loginBtn" value="Login" class="btn solid" />
                 <p class="social-text">Or</p>
                 <div class="social-media">

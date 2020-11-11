@@ -84,6 +84,17 @@ def googleAuthenticate():
                            "message": "Invalid Email"})
     return jsonify(return_message)
 
+# http://localhost:5000/get_users/
+@app.route('/get_users/', methods=['GET'])
+def get_users():
+    users = [User.json()
+                    for User in User.query.all()]
+    if users:
+        return_message = ({"status": "success",
+                           "users": users})
+    else:
+        return_message = ({"status": "fail"})
+    return jsonify(return_message)
 
 # http://localhost:5000/get_user/?user_id=1
 @app.route('/get_user/', methods=['GET'])
