@@ -18,7 +18,7 @@ if (isset($_COOKIE['user'])) {
             <div class="row text-center lead">
                 <div class="col-lg-12">
                     <div id="content">
-                        <h1 class="lobster mt-5">SMU Library Booking System</h1>
+                        <h1 class="lobster mt-3">SMU Library Booking System</h1>
                         <br>
                         <br>
                         <h3>
