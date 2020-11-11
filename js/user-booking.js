@@ -274,7 +274,7 @@ if (userCookie != "") {
         postData = {
             "student_id": user.user_id
         }
-        fetchData('GET', reservationHost+"get_reservations_by_student/",postData)
+        fetchData('GET', reservationHost+"/get_reservations_by_student/",postData)
             .then(data => {
                 var reservations = data.reservations;
                 var reservedTimeSlots=[];
@@ -290,6 +290,7 @@ if (userCookie != "") {
                         });
                     });
                 }
+                console.log(reservedTimeSlots);
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     selectable: true,
                     editable: false,
@@ -489,7 +490,7 @@ if (userCookie != "") {
                     "floor": chosenFloor,
                     "section": chosenSection
                 }
-                fetchData('GET', reservationHost+"get_reservations_by_library_floor_section/",postData)
+                fetchData('GET', reservationHost+"/get_reservations_by_library_floor_section/",postData)
                     .then(data => {
                         var reservations = data.reservations
                         if (typeof reservations !== "undefined"){
