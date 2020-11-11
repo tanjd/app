@@ -2,35 +2,21 @@
     <nav id="mainNavbar" class="navbar navbar-light bg-light py-2 fixed-top">
         <a href="index.php" class="navbar-brand" style="margin-right: 0;">SMULBS</a>
         <div class="d-flex" id="homepageSections">
-
-            
         </div>
-        <div class="ml-auto lead pr-4">Welcome <span id="userName"></span></div>
-
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle Navbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navLinks">
-            <ul id="ul1" class="navbar-nav text-right">
-                <li class="nav-item">
-                    <a href="user_booking.php" class="nav-link">BOOKING<i class="fas fa-book-reader pl-1"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="history.php" class="nav-link">HISTORY<i class="fa fa-history pl-1"></i>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="settings.php" class="nav-link">SETTINGS<i class="fa fa-cog fa-spin fa-lg fa-fw pl-1"></i>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="index.php" onclick="signOut()" class="nav-link">LOG OUT<i class="fas fa-sign-out-alt pl-1"></i>
-                    </a>
-                </li>
-            </ul>
+        <div class="dropdown ml-auto">
+            <button class="navbar-toggler btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Welcome <span class="" id="userName"></span>
+            </button>
+            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                <a href="user_booking.php" class="nav-link">BOOKING<i class="fas fa-book-reader pl-1"></i>
+                </a>
+                <a href="history.php" class="nav-link">HISTORY<i class="fa fa-history pl-1"></i>
+                </a>
+                <a href="settings.php" class="nav-link">SETTINGS<i class="fa fa-cog fa-spin fa-lg fa-fw pl-1"></i>
+                </a>
+                <a href="index.php" onclick="signOut()" class="nav-link">LOG OUT<i class="fas fa-sign-out-alt pl-1"></i>
+                </a>
+            </div>
         </div>
     </nav>
 </div>
@@ -50,8 +36,7 @@
                                                                         <a class="nav-link" href="#section3">CONTACT<i class="fas fa-id-card pl-1"></i></a>
                                                                     </li>
                                                                 </ul>`;
-    }
-    else {
+    } else {
         document.getElementById('homepageSections').innerHTML = '';
     }
 </script>

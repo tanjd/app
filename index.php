@@ -71,15 +71,15 @@ if (isset($_COOKIE['user'])) {
 
                         <div class="info">
                             <div class="information">
-                                <img src="img/contactLocation.png" class="icon" alt="" />
+                                <img src="img/contactLocation.png" class="icon" alt=""/>
                                 <p>70 Stamford Rd, Singapore 178901</p>
                             </div>
                             <div class="information">
-                                <img src="img/contactEmail.png" class="icon" alt="" />
+                                <img src="img/contactEmail.png" class="icon" alt=""/>
                                 <p>smulibrary@smu.edu.sg</p>
                             </div>
                             <div class="information">
-                                <img src="img/contactCall.png" class="icon" alt="" />
+                                <img src="img/contactCall.png" class="icon" alt=""/>
                                 <p>6828 0355</p>
                             </div>
                         </div>
