@@ -7,7 +7,7 @@
             <button class="navbar-toggler btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Welcome <span class="" id="userName"></span>
             </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu w-100 text-center" aria-labelledby="dropdownMenuButton">
                 <a href="user_booking.php" class="nav-link">BOOKING<i class="fas fa-book-reader pl-1"></i>
                 </a>
                 <a href="history.php" class="nav-link">HISTORY<i class="fa fa-history pl-1"></i>
