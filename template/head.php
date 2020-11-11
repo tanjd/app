@@ -43,7 +43,7 @@
     <style>
 
     </style>
-    <title>Library Booking System!</title>
+    <title>Library Seat Reservation System</title>
 </head>
 
 <body>

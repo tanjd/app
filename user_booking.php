@@ -80,7 +80,7 @@ require_once 'template/head.php';
             Scroll up to see your past bookings.
         </div>
         <div class="alert alert-info d-none" role="alert" id = "showMe6">
-            Check your seat selection and click "Confirm Booking" to officially.
+            Check your seat selection and click "Confirm Booking" to officially place a booking.
         </div>
         <div class="row d-flex justify-content-center" id="confirmBooking">
         </div>
@@ -95,7 +95,7 @@ require_once 'template/head.php';
 <script type="text/javascript" src="./include/autoload.js"></script>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js'></script>
-<script type="text/javascript" src="js/user-booking-real.js"></script>
+<script type="text/javascript" src="js/user-booking.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 </html>

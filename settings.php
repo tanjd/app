@@ -19,13 +19,80 @@ require_once 'template/head.php';
         <div class="container">
             <h1>Settings</h1>
         </div>
-        <div class="list-group">
-            <button type="button" id="password" class="list-group-item list-group-item-action ">
-                Change Password
-            </button>
-            <button type="button" id="telegram" class="list-group-item list-group-item-action">Change Telegram Handle</button>
-            <button type="button" id="changealert" class="list-group-item list-group-item-action">Notification</button>
+        <div class="dropdown" >
+            <button style="width: 100%" class="btn btn-success dropdown-toggle mx-auto" type="button" id="password" data-toggle="dropdown"  >Change Password</button>
+            <div class="dropdown-menu" style="width: 100%" >
+                <div class="container">
+                    <form style="margin-top: 20px;" style="width: 100%">
+                        <div class="row">
+                            <div class=" col-md-6 col-md-offset-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Enter Old Password</label>
+                                    <input type="password" class="form-control" id="oldpwd" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Enter New Password</label>
+                                    <input type="password" class="form-control" id="newpwd">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputPassword2">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="cfmpwd">
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="button" id="chgpwd"class="btn btn-success" onclick="pwdValidate()">Change Password</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
+
+        <div class="dropdown" >
+            <button style="width: 100%" class="btn btn-success dropdown-toggle mx-auto" type="button" id="password" data-toggle="dropdown"  >Change Telegram Handle</button>
+            <div class="dropdown-menu" style="width: 100%" >
+                <div class="container">
+                    <form style="margin-top: 20px;">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Enter Old Telegram Handle</label>
+                            <input type="text" class="form-control" id="oldhandle" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Enter New Telegram Handle</label>
+                            <input type="text" class="form-control" id="newhandle">
+                        </div>
+
+
+                        <button type="button" id="chgtele" class="btn btn-success" onclick="validateHandle()">Change Telegram Handle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="dropdown" >
+            <button style="width: 100%" class="btn btn-success dropdown-toggle mx-auto" type="button" id="telehandle" data-toggle="dropdown"  >Change Telegram Handle</button>
+            <div class="dropdown-menu" style="width: 100%" >
+                <div class="container">
+                    <div class="custom-control custom-switch" style = "margin-top:20px;">
+                        <input type="checkbox" class="custom-control-input" id="customSwitches">
+                        <label class="custom-control-label" for="customSwitches">Get Telegram Notifications</label>
+                    </div>
+
+                    <div class="custom-control custom-switch" style = "margin-top:10px;">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch">
+                        <label class="custom-control-label" for="customSwitch">Get Email Notifications</label>
+                    </div>
+                    
+                    <button type="button" class="btn btn-success" onclick="updateNotifications()">Change Telegram Handle</button>
+                </div>
+            </div>
+        </div>
+
 
 
 
@@ -47,68 +114,15 @@ require_once 'template/head.php';
     // Load required script
     window.addEventListener('load', loadScript("starter-template.css"))
 
-    document.getElementById("password").addEventListener("click", changePwd);
-    document.getElementById("telegram").addEventListener("click", changeHandle);
-    document.getElementById("changealert").addEventListener("click", changeAlert);
+    // document.getElementById("password").addEventListener("click", changePwd);
+    // document.getElementById("telegram").addEventListener("click", changeHandle);
+    // document.getElementById("changealert").addEventListener("click", changeAlert);
 
-    function changePwd() {
+    // function pwdValidate(){
+    //     // alert("moop");
 
-        var pwdchange = `
-        <div class="container">
-            <form style="margin-top: 20px;">
-                <div class="row">
-                    <div class=" col-md-6 col-md-offset-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Enter Old Password</label>
-                            <input type="password" class="form-control" id="oldpwd" >
-                        </div>
+    // }
 
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Enter New Password</label>
-                            <input type="password" class="form-control" id="newpwd">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleInputPassword2">Confirm New Password</label>
-                            <input type="password" class="form-control" id="cfmpwd">
-                        </div>
-
-                        <div class="form-group">
-                            <button type="button" id="chgpwd"class="btn btn-success" onclick="pwdValidate()">Change Password</button>
-                        </div>
-                    </div>
-        <div class="col-md-6">
-			<div class="aro-pswd_info">
-				<div id="pswd_info">
-					<h4>Password requirements</h4>
-					<ul>
-						<li id="letter" class="invalid">At least <strong>one letter</strong></li>
-						<li id="capital" class="invalid">At least <strong>one capital letter</strong></li>
-						<li id="number" class="invalid">At least <strong>one number</strong></li>
-						<li id="length" class="invalid">Be at least <strong>8 characters</strong></li>
-						<li id="space" class="invalid">be<strong> use [~,!,@,#,$,%,^,&,*,-,=,.,;,']</strong></li>
-					</ul>
-				</div>
-			</div>
-        </div>
-    </div>
-        <div class="row " style="text-align: center;">
-            
-        </div>
-                    
-            </form>
-        
-    </div>
-    
-        
-        `;
-        
-        document.getElementById("form").innerHTML = pwdchange;
-
-
-
-
-    }
 
     function pwdValidate() {
         var newpwd = document.getElementById("newpwd").value;
@@ -147,7 +161,7 @@ require_once 'template/head.php';
             }
             fetchData('POST',"http://localhost:5000/update_password/",postData)
             .then(data => {
-                console.log("hi");
+                location.reload();
             });
         }
 
@@ -165,34 +179,15 @@ require_once 'template/head.php';
 
 
 
-    function changeHandle() {
+    // function changeHandle() {
 
-        var telechange =
-            `
-        <div class="container">
-            <form style="margin-top: 20px;">
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Enter Old Telegram Handle</label>
-                    <input type="text" class="form-control" id="oldhandle" >
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Enter New Telegram Handle</label>
-                    <input type="text" class="form-control" id="newhandle">
-                </div>
-
-
-                <button type="button" id="chgtele" class="btn btn-success" onclick="validateHandle()">Change Telegram Handle</button>
-            </form>
-        </div>
         
-        `;
 
-        document.getElementById("form").innerHTML = telechange;
-    }
+    //     ;
+    // }
 
     function validateHandle() {
+        const user = JSON.parse(userCookie);
         var tag = `<div class= 'alert alert-success alert-dismissible fade show d-none' id='alertMsg' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label ='Close'><span aria-hidden='true'>&times;</span></button></div>`;
 
         var strong = document.createElement("strong");
@@ -202,27 +197,21 @@ require_once 'template/head.php';
         document.getElementById("message").innerHTML = tag;
         document.getElementById("alertMsg").appendChild(strong);
 
+        postData = {
+            "user_id" : user.user_id,
+            "telegram_id" : telehandle
+            }
+            fetchData('POST',"http://localhost:5000/update_telegram_name/",postData)
+            .then(data => {
+                location.reload();
+            });
+
 
     }
 
 
 
-    function changeAlert() {
-        var notifications = `<div class="custom-control custom-switch" style = "margin-top:20px;">
-            <input type="checkbox" class="custom-control-input" id="customSwitches">
-            <label class="custom-control-label" for="customSwitches">Get Telegram Notifications</label>
-        </div>
-
-        <div class="custom-control custom-switch" style = "margin-top:10px;">
-            <input type="checkbox" class="custom-control-input" id="customSwitch">
-            <label class="custom-control-label" for="customSwitch">Get Email Notifications</label>
-        </div>
-        
-        <button type="button" class="btn btn-success" onclick="updateNotifications()">Change Telegram Handle</button>
-        `;
-
-        document.getElementById("form").innerHTML = notifications;
-    }
+    
 
     // var newpwd = document.getElementById("chgpwd");
     // newpwd.addEventListener("click", updatePwd);

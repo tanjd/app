@@ -2,7 +2,9 @@ var userHost = "http://localhost:5000";
 var libraryHost = "http://localhost:5001";
 var reservationHost = "http://localhost:5002";
 
-
+// var userHost = "http://54.227.210.243:5000";
+// var libraryHost = "http://54.227.210.243:5001";
+// var reservationHost = "http://54.227.210.243:5002";
 // Function to create the cookie
 function createCookie(name, value, days) {
     var expires;
@@ -36,8 +38,16 @@ function getCookie(cname) {
 }
 
 function deleteCookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;';
+    if (getCookie(name)) {
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT" +
+            ("/" ? "; path=" + "/" : "");
+    }
 }
+
+
+// function deleteCookie(name) {
+//     document.cookie = name + '=; Max-Age=-99999999;';
+// }
 
 function onLoad() {
     gapi.load('auth2', function () {
@@ -53,11 +63,10 @@ function googleSignOut() {
 }
 
 function signOut() {
-    console.log("signed out");
+    // console.log("signed out");
     deleteCookie("user");
     console.log(getCookie("user"));
     window.location.replace("login.php");
-
 }
 
 

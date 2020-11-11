@@ -1,4 +1,6 @@
 var seatsDropdownItems = document.getElementsByClassName("blockOffSelections");
+var wtf = document.getElementById("wtf");
+console.log(wtf);
 var library;
 var floor;
 var section;
@@ -15,16 +17,16 @@ if (userCookie != "") {
     const user = JSON.parse(userCookie);
     var showBlockSeats = document.getElementById("showBlockSeats");
     if (showBlockSeats !== null) {
-        fetchData('GET', "http://localhost:5001/get_libraries/",)
+        fetchData('GET', libraryHost+"/get_libraries/",)
         .then(data => {
             var libArr = data.libraries;
-            fetchData('GET', "http://localhost:5001/get_sections/",)
+            fetchData('GET', libraryHost+"/get_sections/",)
                 .then(data => {
                     var secArr = data.sections;
                     postData = {
                         "student_id": user.user_id,
                     }
-                    fetchData('GET', "http://localhost:5002/get_reservations_by_student/",postData)
+                    fetchData('GET', reservationHost+"/get_reservations_by_student/",postData)
                     .then(data => {
                         var reservationArr = data.reservations;
                         if (typeof reservationArr !== "undefined"){
@@ -116,7 +118,7 @@ function create_reservation_bulk(reservations){
     postData = {
         "student_id" : user.user_id
     }
-    fetchData('GET', "http://localhost:5002/get_reservations_by_student/",postData)
+    fetchData('GET', reservationHost+"/get_reservations_by_student/",postData)
     .then(data => {
         var resArr = data.reservations;
         var twoDArrGetResStr = [];
@@ -148,7 +150,7 @@ function create_reservation_bulk(reservations){
         postData = {
             "reservations" : reservations
         }
-        fetchData('POST', "http://localhost:5002/create_reservation_bulk/",postData)
+        fetchData('POST', reservationHost+"/create_reservation_bulk/",postData)
         .then(data => {
             location.reload();
             msg.setAttribute("class", "card-text d-none");
@@ -308,6 +310,7 @@ picker = new Pikaday({
                         //allow choosing of seats
                         var chooseSeats = document.getElementById("chooseSeats");
                         chooseSeats.setAttribute("class", "row");
+                        console.log(chooseSeats);
                         var userCookie = getCookie('user');
                         const user = JSON.parse(userCookie);
                         var loading = document.getElementById("loading");
@@ -332,7 +335,7 @@ picker = new Pikaday({
                                 var dropDownBtnSeats = document.getElementById('dropdownMenuButton');
                                 dropDownBtnSeats.innerText = selection + " seats";
                                 if (selection == "Odd" || selection == "Even") {
-                                    fetchData('GET', "http://localhost:5001/get_seats/",)
+                                    fetchData('GET', libraryHost+"/get_seats/",)
                                     .then(data => {
                                         msg.innerHTML = text;
                                         msg.innerHTML += "you are blocking all the " + selection + " seats! Press confirm to continue.";
@@ -360,7 +363,7 @@ picker = new Pikaday({
                                         });
                                     });
                                 } else {
-                                    fetchData('GET', "http://localhost:5001/get_libraries/",)
+                                    fetchData('GET', libraryHost+"/get_libraries/",)
                                         .then(data => {
                                             var libraries = data.libraries;
                                             msg.innerHTML = text;
@@ -463,7 +466,7 @@ picker = new Pikaday({
                                                                             "library_id": library_id,
                                                                             "floor": floor
                                                                         }
-                                                                        fetchData('GET', "http://localhost:5001/get_sections_by_library_floor/", postData)
+                                                                        fetchData('GET', libraryHost+"/get_sections_by_library_floor/", postData)
                                                                             .then(data => {
                                                                                 var sectionsArr = data.sections;
                                                                                 for (let section of sectionsArr){
@@ -493,7 +496,7 @@ picker = new Pikaday({
                                                                                                 "floor": floor,
                                                                                                 "section": section_id
                                                                                             }
-                                                                                            fetchData('GET', "http://localhost:5001/get_seats_by_library_floor_section/",postData)
+                                                                                            fetchData('GET', libraryHost+"/get_seats_by_library_floor_section/",postData)
                                                                                                 .then(data => {
                                                                                                     var sectionReservations = [];
                                                                                                     var seats = data.seats;
@@ -520,7 +523,7 @@ picker = new Pikaday({
                                                                                         "library_id": library_id,
                                                                                         "floor": floor
                                                                                     }
-                                                                                    fetchData('GET', "http://localhost:5001/get_seats_by_library_floor/",postData)
+                                                                                    fetchData('GET', libraryHost+"/get_seats_by_library_floor/",postData)
                                                                                         .then(data => {
                                                                                             var floorReservations = [];
                                                                                             var seats = data.seats;
@@ -547,7 +550,7 @@ picker = new Pikaday({
                                                                     postData = {
                                                                         "library_id": library_id,
                                                                     }
-                                                                    fetchData('GET', "http://localhost:5001/get_seats_by_library/",postData)
+                                                                    fetchData('GET', libraryHost+"/get_seats_by_library/",postData)
                                                                         .then(data => {
                                                                             var libraryReservations = [];
                                                                             var seats = data.seats;

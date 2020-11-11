@@ -8,9 +8,9 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="./admin_home.php" class="nav-link">Home</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
+        <!-- <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Contact</a>
-        </li>
+        </li> -->
     </ul>
 
     <!-- SEARCH FORM -->

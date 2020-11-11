@@ -18,7 +18,6 @@
 
     <!-- autoload script -->
     <script type="text/javascript" src="include/autoload.js?<?php echo filemtime("./include/autoload.js"); ?>"></script>
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
