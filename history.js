@@ -1,15 +1,17 @@
 
 function deleteBooking(id){
+    
+
     postData = {
         "reservation_id" : id
     }
-    fetchData('POST',"http://localhost:5002/remove_reservation/",postData)
+    fetchData('POST', reservationHost + '/remove_reservation/',postData)
         .then(data => {
             location.reload();
         });
 }
 var userCookie = getCookie("user");
-if(userCookie !== ""){
+
     var user = JSON.parse(userCookie);
     
     var current = document.getElementById("current");
@@ -18,10 +20,10 @@ if(userCookie !== ""){
             stuId = {
             "student_id": user.user_id,
         }
-        fetchData('GET', "http://localhost:5002/get_reservations_by_student/",stuId)
+        fetchData('GET', reservationHost+ '/get_reservations_by_student/',stuId)
             .then(data => {
                 var reservationArr = data.reservations;
-                fetchData('GET',"http://localhost:5001/get_sections/")
+                fetchData('GET', libraryHost + '/get_sections/',getData)
                 .then(data => {
                     var sectionArr = data.sections;
                 if (typeof(reservationArr) !== "undefined"){
@@ -223,7 +225,7 @@ if(userCookie !== ""){
             })
 
             
-        }
+        
         
     
 

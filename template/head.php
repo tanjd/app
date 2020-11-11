@@ -39,7 +39,8 @@
     <!-- fontawesome icons script -->
     <script src="https://kit.fontawesome.com/62a451c573.js" crossorigin="anonymous"></script>
 
-
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <style>
 
     </style>

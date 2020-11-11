@@ -167,6 +167,7 @@ def update_email_notification():
     user_id = setting_data['user_id']
     user = User.query.filter_by(id=user_id).first()
     user.email_setting = setting_data['email_setting']
+    user.telegram_setting = setting_data['telegram_setting']
 
     try:
         db.session.commit()
@@ -176,6 +177,24 @@ def update_email_notification():
         return jsonify({"status": "fail",
                         "message": "An error occurred updating user email notification setting."})
     return jsonify({"status": "success"})
+
+
+# #http://localhost:5000/update_telegram_notification/
+# @app.route('/update_telegram_notification/', methods=['POST'])
+# def update_email_notification():
+#     setting_data = request.get_json()
+#     user_id = setting_data['user_id']
+#     user = User.query.filter_by(id=user_id).first()
+#     user.telegram_setting = setting_data['telegram_setting']
+
+#     try:
+#         db.session.commit()
+#     except Exception as error:
+#         db.session.rollback()
+#         print(error)
+#         return jsonify({"status": "fail",
+#                         "message": "An error occurred updating user telegram notification setting."})
+#     return jsonify({"status": "success"})
 # @app.route('/fb_login', methods=['POST'])
 # def fb_login():
 #     fb_data = request.get_json()
