@@ -214,3 +214,51 @@ function navbar2Load() {
         }
     }
 }
+function homePageLoad() {
+    var userCookie = getCookie("user");
+    if (userCookie != ""){
+        document.getElementById("intro").innerHTML = '';
+    }
+    else {
+        document.getElementById("intro").innerHTML = `<div class="intro">
+                                                            <div class="intro-text">
+                                                                <h1 class="hide"><span class="text">Revolutionizing Your</span></h1>
+                                                                <h1 class="hide"><span class="text">Library Experience</span></h1>
+                                                                <h1 class="hide"><span class="text">With Just a Click!</span></h1>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slider"></div>`;
+    const tl = gsap.timeline({
+        defaults: {
+            ease: "power1.out"
+        }
+    });
+
+    tl.to('.text', {
+        y: "0%",
+        duration: 1,
+        stagger: 0.25
+    });
+    tl.to('.slider', {
+        y: "-100%",
+        duration: 1.5,
+        delay: 0.5
+    });
+    tl.to(".intro", {
+        y: "-100%",
+        duration: 1
+    }, "-=1");
+    tl.fromTo("#mainNavbar", {
+        opacity: 0
+    }, {
+        opacity: 1,
+        duration: 1
+    });
+    tl.fromTo("#content", {
+        opacity: 0
+    }, {
+        opacity: 1,
+        duration: 1
+    }, "-=1");
+    }
+}
