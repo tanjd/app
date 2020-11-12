@@ -1,10 +1,10 @@
-var userHost = "http://localhost:5000";
-var libraryHost = "http://localhost:5001";
-var reservationHost = "http://localhost:5002";
+// var userHost = "http://localhost:5000";
+// var libraryHost = "http://localhost:5001";
+// var reservationHost = "http://localhost:5002";
 
-// var userHost = "http://54.227.210.243:5000";
-// var libraryHost = "http://54.227.210.243:5001";
-// var reservationHost = "http://54.227.210.243:5002";
+var userHost = "http://54.227.210.243:5000";
+var libraryHost = "http://54.227.210.243:5001";
+var reservationHost = "http://54.227.210.243:5002";
 // Function to create the cookie
 function createCookie(name, value, days) {
     var expires;
