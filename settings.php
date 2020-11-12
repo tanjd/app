@@ -152,7 +152,7 @@ require_once 'template/head.php';
         userId = {
         "user_id": user.user_id,
         }
-        fetchData('GET', userHost + '/get_user/',getData)
+        fetchData('GET',userHost + '/get_user/',userId)
             .then(data => {
                 console.log('ted');
                 var email = data["user"]["email_setting"];
@@ -181,10 +181,12 @@ require_once 'template/head.php';
             userId = {
                 "user_id": user.user_id,
             }
-            fetchData('GET', userHost + '/get_user/',getData)
+            // fetchData('GET',userHost + '/get_user/',userId)
+            fetchData('GET', userHost + '/get_user/',userId)
                 .then(data => {
                     // alert("good");
                     var email = data["user"]["email_setting"];
+                    // console.log("moop");
                     var tele = data["user"]["telegram_setting"];
                     console.log(email);         
                     console.log(tele);
@@ -233,7 +235,8 @@ require_once 'template/head.php';
             userId = {
                 "user_id": user.user_id,
             }
-            fetchData('GET', userHost + '/get_user/',getData)
+            // fetchData('GET',userHost + '/get_user/',userId)
+            fetchData('GET',userHost + '/get_user/',userId)
                 .then(data => {
                     var pwdold = data["user"]["password"];
                     console.log(pwdold);
@@ -311,7 +314,8 @@ require_once 'template/head.php';
                         "user_id" : user.user_id,
                         "password" : newpwd
                         }
-                        fetchData('POST', userHost + '/update_password/',postData)     
+                        // fetchData('GET',userHost + '/get_user/',userId)
+                        fetchData('POST', userHost + '/update_password/', postData)     
                         
                     }
 
@@ -329,7 +333,8 @@ require_once 'template/head.php';
                 userId = {
                     "user_id": user.user_id,
                 }
-                fetchData('GET', userHost + '/get_user/',getData)
+                // fetchData('GET',userHost + '/get_user/',userId)
+                fetchData('GET',userHost + '/get_user/',userId)
                     .then(data => {
                         var teleold = data["user"]["telegram_name"];
                         console.log(teleold);
@@ -363,6 +368,7 @@ require_once 'template/head.php';
                         "user_id" : user.user_id,
                         "telegram_name" : newhandle
                         }
+                        // fetchData('GET',userHost + '/get_user/',userId)
                         fetchData('POST', userHost + '/update_telegram_name/', postData)
                         
 

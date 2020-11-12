@@ -5,7 +5,8 @@ function deleteBooking(id){
     postData = {
         "reservation_id" : id
     }
-    fetchData('POST', reservationHost + '/remove_reservation/',postData)
+    fetchData('POST',reservationHost + '/remove_reservation/', postData)
+    
         .then(data => {
             location.reload();
         });
@@ -20,10 +21,11 @@ var userCookie = getCookie("user");
             stuId = {
             "student_id": user.user_id,
         }
-        fetchData('GET', reservationHost+ '/get_reservations_by_student/',stuId)
+        fetchData('GET',reservationHost + '/get_reservations_by_student/', stuId)
+        
             .then(data => {
                 var reservationArr = data.reservations;
-                fetchData('GET', libraryHost + '/get_sections/',getData)
+                fetchData('GET', libraryHost + '/get_sections/')
                 .then(data => {
                     var sectionArr = data.sections;
                 if (typeof(reservationArr) !== "undefined"){

@@ -38,7 +38,7 @@ require_once 'template/head.php';
                 <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h2 style="align-content:center; color: black;">Current Bookings</h2>
+                    <h5 style="align-content:center; color: black;">Current Bookings</h5>
                     </button>
                 </h5>
                 </div>
@@ -55,7 +55,7 @@ require_once 'template/head.php';
                 <div class="card-header" id="headingTwo">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    <h2 style="align-content:center; color: black;">Past Bookings</h2>
+                    <h5 style="align-content:center; color: black;">Past Bookings</h5>
                     </button>
                 </h5>
                 </div>
