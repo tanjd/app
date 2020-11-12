@@ -57,16 +57,16 @@ tr {
 .booked-seat {
 	margin-left: 4px;
 	width: 25px;
-	content: url('../../app/img/booked.png');
+	content: url('../img/booked.png');
 }
 .empty-seat {
 	cursor: pointer;
 	width: 25px;
-	content: url('../../app/img/available.png');
+	content: url('../img/available.png');
 }
 .selected-seat {
 	cursor: pointer;
-	content: url('../../app/img/selected.png');
+	content: url('../img/selected.png');
 	width: 25px;
 }
 .space {
