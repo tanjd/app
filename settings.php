@@ -121,7 +121,7 @@ require_once 'template/head.php';
             <label ><input type="checkbox" value="" id="emailSwitch">Get Email Notifications</label>
         </div>
         <div>
-            <button type="button" class="btn btn-success mx-3" id="updateNoti">Change Telegram Handle</button>
+            <button type="button" class="btn btn-success mx-3 my-2" id="updateNoti">Change Notifications</button>
         </div>
         <div id="successMsg"></div>
     <!-- </div> -->
