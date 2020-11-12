@@ -263,7 +263,7 @@ $(function () {
           }
         }
         var lkcCapacityChartData = {
-          labels: ['Capacity', 'Available Capacity'],
+          labels: ['Occupancy', 'Available'],
           datasets: [
             {
               // borderColor: '#efefef',
@@ -272,7 +272,7 @@ $(function () {
             }]
         }
         var kgcCapacityChartData = {
-          labels: ['Capacity', 'Available Capacity'],
+          labels: ['Occupancy', 'Available'],
           datasets: [
             {
               // borderColor: '#efefef',

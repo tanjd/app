@@ -30,16 +30,6 @@ require_once 'template/admin_head.php';
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
                     <div class="row">
                         <!-- Left col -->
                         <section class="col-lg-7 connectedSortable">

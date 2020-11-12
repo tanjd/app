@@ -1,6 +1,4 @@
 var seatsDropdownItems = document.getElementsByClassName("blockOffSelections");
-var wtf = document.getElementById("wtf");
-console.log(wtf);
 var library;
 var floor;
 var section;
@@ -17,16 +15,16 @@ if (userCookie != "") {
     const user = JSON.parse(userCookie);
     var showBlockSeats = document.getElementById("showBlockSeats");
     if (showBlockSeats !== null) {
-        fetchData('GET', "http://localhost:5001/get_libraries/",)
+        fetchData('GET', libraryHost+"/get_libraries/",)
         .then(data => {
             var libArr = data.libraries;
-            fetchData('GET', "http://localhost:5001/get_sections/",)
+            fetchData('GET', libraryHost+"/get_sections/",)
                 .then(data => {
                     var secArr = data.sections;
                     postData = {
-                        "student_id": user.user_id,
+                        "student_id": user.user_id
                     }
-                    fetchData('GET', "http://localhost:5002/get_reservations_by_student/",postData)
+                    fetchData('GET', reservationHost+"/get_reservations_by_student/",postData)
                     .then(data => {
                         var reservationArr = data.reservations;
                         if (typeof reservationArr !== "undefined"){
@@ -63,6 +61,62 @@ if (userCookie != "") {
                 });
         });
     }
+    var showAllReservationsSeats = document.getElementById("showAllReservationsSeats");
+    if (showAllReservationsSeats !== null) {
+        fetchData('GET', libraryHost+"/get_libraries/",)
+        .then(data => {
+            var libArr = data.libraries;
+            fetchData('GET', libraryHost+"/get_sections/",)
+            .then(data => {
+                var secArr = data.sections;
+                fetchData('GET', userHost+"/get_users/",)
+                .then(data => {
+                    var usersArr = data.users;
+                    var usersDic = [];
+                    for (let el of usersArr){
+                        usersDic[el.id] = el.name;
+                    }
+                    fetchData('GET', reservationHost+"/get_reservations/",)
+                    .then(data => {
+                        var reservationArr = data.reservations;
+                        if (typeof reservationArr !== "undefined"){
+                            var html_str = "";
+                            for (reservation of reservationArr){
+                                var library;
+                                var section;
+                                var user = reservation.student_id;
+                                var library_id = reservation.library_id;
+                                for (let el of libArr){
+                                    if (library_id === el.id){
+                                        library = el.name.slice(0, el.name.length-8);
+                                    }
+                                }
+                                var floor = reservation.floor;
+                                var section_id = reservation.section;
+                                for (let el of secArr){
+                                    if (library_id === el.library_id && floor === el.floor && section_id === el.section) {
+                                        section = el.venue;
+                                    }
+                                }
+                                var seat_id = reservation.seat_id;
+                                var start = reservation.start;
+                                start = start.slice(0, start.length - 7);
+                                var end = reservation.end;
+                                end = end.slice(0, end.length - 7);
+                                var username = usersDic[user];
+                                html_str += `<tr><td>${username}</td><td>${library}</td><td>${floor}</td><td>${section}</td><td>${seat_id}</td><td>${start}</td><td>${end}</td></tr>`;
+                                showAllReservationsSeats.innerHTML = html_str;
+                            }
+
+                            $('#showAll').DataTable({
+                                pageLength: 5
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    }
 }
 function getNearestHalfHourTimeString() {
     var now = new Date();
@@ -94,7 +148,6 @@ if (minTimeF === "11:30PM" || minTimeF === "12:00AM"){
     const today = new Date();
     picker1Date = new Date(today);
     picker1Date.setDate(picker1Date.getDate() + 1);
-    console.log(picker1Date);
 }
 const convertTime12to24 = (time12h) => {
     const [time, modifier] = time12h.split(' ');
@@ -114,11 +167,10 @@ Date.prototype.addHours = function(h) {
 function create_reservation_bulk(reservations){
     var userCookie = getCookie('user');
     const user = JSON.parse(userCookie);
-    console.log(user.user_id);
     postData = {
         "student_id" : user.user_id
     }
-    fetchData('GET', "http://localhost:5002/get_reservations_by_student/",postData)
+    fetchData('GET', reservationHost+"/get_reservations_by_student/",postData)
     .then(data => {
         var resArr = data.reservations;
         var twoDArrGetResStr = [];
@@ -141,7 +193,6 @@ function create_reservation_bulk(reservations){
             var temp = [];
             for(var i = 0; i < reservationsStr.length; i++){
                 if(twoDArrGetResStr.indexOf(reservationsStr[i]) == -1){
-                    console.log('wtf');
                     temp.push(reservations[i]);
                 }
             }
@@ -150,7 +201,7 @@ function create_reservation_bulk(reservations){
         postData = {
             "reservations" : reservations
         }
-        fetchData('POST', "http://localhost:5002/create_reservation_bulk/",postData)
+        fetchData('POST', reservationHost+"/create_reservation_bulk/",postData)
         .then(data => {
             location.reload();
             msg.setAttribute("class", "card-text d-none");
@@ -276,14 +327,12 @@ picker = new Pikaday({
                     if (isoDateFrom == isoDateTo){
                         minTime = timeFrom;
                     }
-                    console.log(minTime);
                     $('#timepickerTo').timepicker({
                         'minTime': minTime,
                         'maxTime': '11:00pm'
                     });
                     confirmBtn.addEventListener("click", function () {
                         msg.setAttribute("class", "card-text d-block");
-                        console.log(toT);
                         if (typeof toT == "undefined") {
                             msg.innerHTML = "Please fill in to time";
                         }
@@ -298,7 +347,6 @@ picker = new Pikaday({
                         confirmBtn.addEventListener("click", function () {
                             msg.setAttribute("class", "card-text d-block");
                             if (typeof selection == "undefined"){
-                                console.log(selection); 
                                 msg.innerHTML = "Please choose seats to be blocked off.";
                             }
                         });
@@ -310,7 +358,6 @@ picker = new Pikaday({
                         //allow choosing of seats
                         var chooseSeats = document.getElementById("chooseSeats");
                         chooseSeats.setAttribute("class", "row");
-                        console.log(chooseSeats);
                         var userCookie = getCookie('user');
                         const user = JSON.parse(userCookie);
                         var loading = document.getElementById("loading");
@@ -324,18 +371,16 @@ picker = new Pikaday({
                             var count = (string.match(/continue/g) || []).length;
                             if (count > 0){
                                 var arr = string.split(",");
-                                console.log(arr);
                                 msg.innerHTML = arr[0] + ", ";
                             }
                         });
-                        console.log(msg.innerHTML);
                         for (let i = 0; i < seatsDropdownItems.length; i++) {
                             seatsDropdownItems[i].addEventListener('click', function () {
                                 selection = this.id;
                                 var dropDownBtnSeats = document.getElementById('dropdownMenuButton');
                                 dropDownBtnSeats.innerText = selection + " seats";
                                 if (selection == "Odd" || selection == "Even") {
-                                    fetchData('GET', "http://localhost:5001/get_seats/",)
+                                    fetchData('GET', libraryHost+"/get_seats/",)
                                     .then(data => {
                                         msg.innerHTML = text;
                                         msg.innerHTML += "you are blocking all the " + selection + " seats! Press confirm to continue.";
@@ -363,7 +408,7 @@ picker = new Pikaday({
                                         });
                                     });
                                 } else {
-                                    fetchData('GET', "http://localhost:5001/get_libraries/",)
+                                    fetchData('GET', libraryHost+"/get_libraries/",)
                                         .then(data => {
                                             var libraries = data.libraries;
                                             msg.innerHTML = text;
@@ -377,7 +422,6 @@ picker = new Pikaday({
                                                     var arr = string.split(",");
                                                     msg.innerHTML = arr[0] + ", ";
                                                     var arr1 = string.split(".");
-                                                    console.log(arr1);
                                                     msg.innerHTML += arr1[1] + ".";
                                                     msg.setAttribute("class", "card-text d-block");
                                                 } else{
@@ -412,7 +456,6 @@ picker = new Pikaday({
                                                                 var arr = string.split(",");
                                                                 msg.innerHTML = arr[0] + ", ";
                                                                 var arr1 = string.split(".");
-                                                                console.log(arr1);
                                                                 msg.innerHTML += arr1[1] + ".";
                                                                 msg.setAttribute("class", "card-text d-block");
                                                             } else{
@@ -451,7 +494,6 @@ picker = new Pikaday({
                                                                                 var arr = string.split(",");
                                                                                 msg.innerHTML = arr[0] + ", ";
                                                                                 var arr1 = string.split(".");
-                                                                                console.log(arr1);
                                                                                 msg.innerHTML += arr1[1] + ".";
                                                                                 msg.setAttribute("class", "card-text d-block");
                                                                             } else{
@@ -466,7 +508,7 @@ picker = new Pikaday({
                                                                             "library_id": library_id,
                                                                             "floor": floor
                                                                         }
-                                                                        fetchData('GET', "http://localhost:5001/get_sections_by_library_floor/", postData)
+                                                                        fetchData('GET', libraryHost+"/get_sections_by_library_floor/", postData)
                                                                             .then(data => {
                                                                                 var sectionsArr = data.sections;
                                                                                 for (let section of sectionsArr){
@@ -482,7 +524,6 @@ picker = new Pikaday({
                                                                                         var dropDownBtnSec = document.getElementById('dropdownMenuButtonSec');
                                                                                         dropDownBtnSec.innerText = this.value;
                                                                                         msg.innerHTML += "you are blocking section " + section + " of floor " + floor + " of " + library + "! Press confirm to continue.";
-                                                                                        console.log(msg.innerHTML); 
                                                                                         msg.setAttribute("class", "card-text d-block");
                                                                                         confirmBtn.setAttribute("class", "row justify-content-center d-block");
                                                                                         confirmBtn.addEventListener("click", function () {
@@ -496,7 +537,7 @@ picker = new Pikaday({
                                                                                                 "floor": floor,
                                                                                                 "section": section_id
                                                                                             }
-                                                                                            fetchData('GET', "http://localhost:5001/get_seats_by_library_floor_section/",postData)
+                                                                                            fetchData('GET', libraryHost+"/get_seats_by_library_floor_section/",postData)
                                                                                                 .then(data => {
                                                                                                     var sectionReservations = [];
                                                                                                     var seats = data.seats;
@@ -523,7 +564,7 @@ picker = new Pikaday({
                                                                                         "library_id": library_id,
                                                                                         "floor": floor
                                                                                     }
-                                                                                    fetchData('GET', "http://localhost:5001/get_seats_by_library_floor/",postData)
+                                                                                    fetchData('GET', libraryHost+"/get_seats_by_library_floor/",postData)
                                                                                         .then(data => {
                                                                                             var floorReservations = [];
                                                                                             var seats = data.seats;
@@ -550,7 +591,7 @@ picker = new Pikaday({
                                                                     postData = {
                                                                         "library_id": library_id,
                                                                     }
-                                                                    fetchData('GET', "http://localhost:5001/get_seats_by_library/",postData)
+                                                                    fetchData('GET', libraryHost+"/get_seats_by_library/",postData)
                                                                         .then(data => {
                                                                             var libraryReservations = [];
                                                                             var seats = data.seats;

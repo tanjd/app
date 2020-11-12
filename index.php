@@ -18,11 +18,11 @@ if (isset($_COOKIE['user'])) {
             <div class="row text-center lead">
                 <div class="col-lg-12">
                     <div id="content">
-                        <h1 class="lobster">Library Booking</h1>
+                        <h1 class="lobster mt-3">SMU Library Booking System</h1>
                         <br>
                         <br>
                         <h3>
-                            The Fastest and Most Easiest Way to Ensure You Always Have a Seat!
+                            The Fastest and Easiest Way to Ensure You Always Have a Seat!
                         </h3>
                         <hr class="hr">
                         <button class="btn btn-light btn-lg text-dark" onclick="toBooking()">
@@ -34,21 +34,26 @@ if (isset($_COOKIE['user'])) {
         </div>
     </section>
     <section class="section s2">
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-        <lottie-player id="lottie" src="img/lf30_editor_pifdp6py.json" background="transparent" speed="1" loop autoplay></lottie-player>
-        <div class="container lead">
+        
+        <!-- <lottie-player id="lottie" src="img/lf30_editor_pifdp6py.json" background="transparent" speed="1" loop autoplay></lottie-player> -->
+        <div class="container lead mt-5">
 
 
             <h1 class="lobster" id="about">About Us</h1>
             <hr class="hr">
-            <br>
-            <div class="container" id="aboutContainer">
-                <p class="aboutPara">Established in 2020, made for students!</p>
-                <p class="aboutPara">With the improvements of technology over the years, we have come out with the one and only solution to solve every students' worries</p>
-                <p class="aboutPara">Now with just a click of a button, you are able to select the seat you want, without having to worry about people fighting over it</p>
-                <p class="aboutPara">
-                    <b>Fuss Free Booking System by us!</b>
-                </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                    <lottie-player id="lottie" src="img/lf30_editor_pifdp6py.json" background="transparent" speed="1" loop autoplay></lottie-player>
+                </div>
+                <div class="col-md-6 pt-5">
+                    <p class="aboutPara">Established in 2020, made for students!</p>
+                    <p class="aboutPara">With the improvements of technology over the years, we have come out with the one and only solution to solve every students' worries</p>
+                    <p class="aboutPara">Now with just a click of a button, you are able to select the seat you want, without having to worry about people fighting over it</p>
+                    <p class="aboutPara">
+                        <b>Fuss Free Booking System by us!</b>
+                    </p>
+                </div>
             </div>
 
 
@@ -66,15 +71,15 @@ if (isset($_COOKIE['user'])) {
 
                         <div class="info">
                             <div class="information">
-                                <img src="img/contactLocation.png" class="icon" alt="" />
+                                <img src="img/contactLocation.png" class="icon" alt=""/>
                                 <p>70 Stamford Rd, Singapore 178901</p>
                             </div>
                             <div class="information">
-                                <img src="img/contactEmail.png" class="icon" alt="" />
-                                <p>smulikashing@smu.edu.sg</p>
+                                <img src="img/contactEmail.png" class="icon" alt=""/>
+                                <p>smulibrary@smu.edu.sg</p>
                             </div>
                             <div class="information">
-                                <img src="img/contactCall.png" class="icon" alt="" />
+                                <img src="img/contactCall.png" class="icon" alt=""/>
                                 <p>6828 0355</p>
                             </div>
                         </div>
@@ -82,16 +87,16 @@ if (isset($_COOKIE['user'])) {
                         <div class="social-media">
                             <p>Connect with us :</p>
                             <div class="social-icons">
-                                <a href="#">
+                                <a href="https://www.facebook.com/sgsmu/">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="#">
+                                <a href="https://twitter.com/sgSMU?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor">
                                     <i class="fab fa-twitter"></i>
                                 </a>
-                                <a href="#">
+                                <a href="https://www.instagram.com/sgsmu/?hl=en">
                                     <i class="fab fa-instagram"></i>
                                 </a>
-                                <a href="#">
+                                <a href="https://sg.linkedin.com/school/singapore-management-university/">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
                             </div>
@@ -99,7 +104,7 @@ if (isset($_COOKIE['user'])) {
                     </div>
 
                     <div class="contact-form">
-                        <form action="index.html" autocomplete="off">
+                        <form id="form" autocomplete="off">
                             <h3 class="title">Contact us</h3>
                             <div class="input-container">
                                 <input type="text" name="name" class="input" />
@@ -121,7 +126,8 @@ if (isset($_COOKIE['user'])) {
                                 <label for="">Message</label>
                                 <span>Message</span>
                             </div>
-                            <input type="submit" value="Send" class="btn" />
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="sendEnquiry()">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -130,18 +136,29 @@ if (isset($_COOKIE['user'])) {
         </div>
     </section>
 </div>
+<div class="modal fade" id="myModal" role="dialog" style="position:relative;">
+    <div class="modal-dialog">
 
-</div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-<div class="intro">
-    <div class="intro-text">
-        <h1 class="hide"><span class="text">Revolutionizing Your</span></h1>
-        <h1 class="hide"><span class="text">Library Experience</span></h1>
-        <h1 class="hide"><span class="text">With Just a Click!</span></h1>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for the enquiry! We will get back to you in 1 to 2 working days.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
-<div class="slider"></div>
 
+</div>
+<div id="intro">
+
+</div>
 
 
 <?php
@@ -151,40 +168,8 @@ require_once 'template/footer.php';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js" integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ==" crossorigin="anonymous"></script>
 
 <script>
+    window.addEventListener('load', homePageLoad);
     window.addEventListener('load', loadScript("contactForm.css"));
-
-    const tl = gsap.timeline({
-        defaults: {
-            ease: "power1.out"
-        }
-    });
-
-    tl.to('.text', {
-        y: "0%",
-        duration: 1,
-        stagger: 0.25
-    });
-    tl.to('.slider', {
-        y: "-100%",
-        duration: 1.5,
-        delay: 0.5
-    });
-    tl.to(".intro", {
-        y: "-100%",
-        duration: 1
-    }, "-=1");
-    tl.fromTo("#mainNavbar", {
-        opacity: 0
-    }, {
-        opacity: 1,
-        duration: 1
-    });
-    tl.fromTo("#content", {
-        opacity: 0
-    }, {
-        opacity: 1,
-        duration: 1
-    }, "-=1");
 
 
     new fullpage("#fullpage", {
@@ -192,6 +177,7 @@ require_once 'template/footer.php';
         navigation: true,
         navigationTooltips: ['Home', 'About Us', 'Contact Us'],
         anchors: ['section1', 'section2', 'section3'],
+        responsiveWidth: 768,
         onLeave: (origin, destination, direction) => {
             const section = destination.item;
             const title = section.querySelector("h1");
@@ -236,7 +222,8 @@ require_once 'template/footer.php';
             window.location.href = "login.php";
         }
     }
+
+    function sendEnquiry() {
+        document.getElementById("form").reset();
+    }
 </script>
-<!-- <script src="./js/fullpage.min.js"></script>
-    <script src="./js/app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js" integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ==" crossorigin="anonymous"></script> -->
