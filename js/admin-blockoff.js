@@ -9,7 +9,6 @@ var isoTimeFrom;
 var isoTimeTo;
 var timeFrom;
 var dateFrom;
-var selection;
 var userCookie = getCookie('user');
 if (userCookie != "") {
     const user = JSON.parse(userCookie);
@@ -165,6 +164,7 @@ Date.prototype.addHours = function(h) {
     return this;
 }
 function create_reservation_bulk(reservations){
+    
     var userCookie = getCookie('user');
     const user = JSON.parse(userCookie);
     postData = {
@@ -196,17 +196,25 @@ function create_reservation_bulk(reservations){
                     temp.push(reservations[i]);
                 }
             }
-            reservations = temp;
+            postData = {
+                "reservations" : temp
+            }
+            fetchData('POST', reservationHost+"/create_reservation_bulk/",postData)
+            .then(data => {
+                location.reload();
+                msg.setAttribute("class", "card-text d-none");
+            });
+        } else {
+            postData = {
+                "reservations" : reservations
+            }
+            fetchData('POST', reservationHost+"/create_reservation_bulk/",postData)
+            .then(data => {
+                location.reload();
+                msg.setAttribute("class", "card-text d-none");
+            });
         }
-        postData = {
-            "reservations" : reservations
-        }
-        fetchData('POST', reservationHost+"/create_reservation_bulk/",postData)
-        .then(data => {
-            location.reload();
-            msg.setAttribute("class", "card-text d-none");
-        });
-    })
+    });
 }
 var fromTimeEl = document.getElementById("fromTime");
 var toTimeEl = document.getElementById("toTime");
@@ -215,6 +223,7 @@ var fromD;
 var fromDT;
 var toD;
 var toT;
+var timeF
 var timePickerFrom = document.getElementById("timepickerFrom");
 var timePickerTo = document.getElementById("timepickerTo");
 var datePickerTo = document.getElementById("datepickerTo");
@@ -234,11 +243,12 @@ $('#timepickerTo').timepicker({
 });
 var confirmBtn = document.getElementById("confirmBtn");
 confirmBtn.addEventListener("click", function () {
-    msg.setAttribute("class", "card-text d-block");
     if (typeof fromD == "undefined") {
         msg.innerHTML = "Please fill in from date";
+        msg.setAttribute("class", "card-text d-block");
     } else if (typeof timeF == "undefined") {
         msg.innerHTML = "Please fill in from time";
+        msg.setAttribute("class", "card-text d-block");
     }
 
 });
@@ -298,7 +308,7 @@ picker = new Pikaday({
                 timeFrom = timeFrom + "pm"
             }
             // to add a space between time and am/pm so to use the function 
-            var timeF = this.value;
+            timeF = this.value;
             var processedTimeF = timeF.slice(0,timeF.length-2); //4:00pm
             processedTimeF += " " + timeF.slice(timeF.length-2,);
             isoTimeFrom = convertTime12to24(processedTimeF);
@@ -374,9 +384,15 @@ picker = new Pikaday({
                                 msg.innerHTML = arr[0] + ", ";
                             }
                         });
+                        var selection;
+                        var clickedArr = [];
+                        var section_id;
+                        var library_id1;
+                        var floor;
                         for (let i = 0; i < seatsDropdownItems.length; i++) {
                             seatsDropdownItems[i].addEventListener('click', function () {
-                                selection = this.id;
+                                clickedArr.push(this.id);
+                                selection = clickedArr[clickedArr.length-1];
                                 var dropDownBtnSeats = document.getElementById('dropdownMenuButton');
                                 dropDownBtnSeats.innerText = selection + " seats";
                                 if (selection == "Odd" || selection == "Even") {
@@ -387,7 +403,6 @@ picker = new Pikaday({
                                         msg.setAttribute("class", "card-text d-block");
                                         confirmBtn.addEventListener("click", function () {
                                             msg.setAttribute("class", "card-text d-none");
-                                            loading.setAttribute("class", "row d-block");
                                             var oddReservations = [];
                                             var evenReservations = [];
                                             var seats = data.seats;
@@ -401,8 +416,10 @@ picker = new Pikaday({
                                                 }
                                             }
                                             if (selection == "Odd"){
+                                                loading.setAttribute("class", "row d-block");
                                                 create_reservation_bulk(oddReservations);
-                                            } else {
+                                            } else if (selection == "Even") {
+                                                loading.setAttribute("class", "row d-block");
                                                 create_reservation_bulk(evenReservations);
                                             }
                                         });
@@ -438,9 +455,92 @@ picker = new Pikaday({
                                             html_str += `</div>`;
                                             specificationsDropdown.innerHTML = html_str;
                                             var librariesDropdownItems = document.getElementsByClassName("libraries");
+                                            var libArr = [];
+                                            library_id1;
+                                            var library;
+                                            if (selection == "Library"){
+                                                for (let j = 0; j < librariesDropdownItems.length; j++) {
+                                                    librariesDropdownItems[j].addEventListener('click', function () {
+                                                        msg.innerHTML = text;
+                                                        libArr.push(this.id);
+                                                        library_id1 = libArr[libArr.length - 1];
+                                                        var dropDownBtnLib = document.getElementById('dropdownMenuButtonLib');
+                                                        dropDownBtnLib.innerText = this.value;
+                                                        library = this.value;
+                                                        msg.innerHTML += "you are blocking " + library + "! Press confirm to continue.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                    });
+                                                }
+                                                confirmBtn.setAttribute("class", "row justify-content-center d-block");
+                                                confirmBtn.addEventListener("click", function () {
+                                                    if (typeof library_id1 == "undefined" || library_id1 == "") {
+                                                        msg.innerHTML = "Please select a library.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                    } else {
+                                                        msg.setAttribute("class", "card-text d-none");
+                                                        specificationsDropdown.innerHTML="";
+                                                        postData = {
+                                                            "library_id": library_id1,
+                                                        }
+                                                        fetchData('GET', libraryHost+"/get_seats_by_library/",postData)
+                                                            .then(data => {
+                                                                var libraryReservations = [];
+                                                                var seats = data.seats;
+                                                                if (!typeof seats == "undefined") {
+                                                                    for (seat of seats){
+                                                                        var libraryReservationJSON = {"student_id": user.user_id, "library_id": seat.library_id, "seat_id": seat.id, "floor": seat.floor, "section": seat.section, "start": isoDTFrom, "end": isoDTTo};
+                                                                        libraryReservations.push(libraryReservationJSON);
+                                                                    }
+                                                                    if (selection == "Library") {
+                                                                        loading.setAttribute("class", "row d-block");
+                                                                        create_reservation_bulk(libraryReservations);
+                                                                    }
+                                                                }
+                                                            });
+                                                    }
+                                                });
+
+                                            }
+                                            if (selection == "Section"){
+                                                confirmBtn.addEventListener("click", function () {
+                                                    if (typeof library_id1 == "undefined" || library_id1 == "") {
+                                                        msg.innerHTML = "Please select a library.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                        loading.setAttribute("class", "row d-none");
+                                                    } else if (typeof floor == "undefined" || floor == "") {
+                                                        msg.innerHTML = "Please select a floor.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                        loading.setAttribute("class", "row d-none");
+                                                    } else if (typeof section_id == "undefined" || section_id == "") {
+                                                        msg.innerHTML = "Please select a section.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                        loading.setAttribute("class", "row d-none");
+                                                    } else {
+                                                        msg.setAttribute("class", "card-text d-none");
+                                                    }
+                                                });
+                                                msg.innerHTML = "";
+                                            }
+                                            else if (selection == "Floor"){
+                                                confirmBtn.addEventListener("click", function () {
+                                                    if (typeof library_id1 == "undefined" || library_id1 == "") {
+                                                        msg.innerHTML = "Please select a library.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                        loading.setAttribute("class", "row d-none");
+                                                    } else if (typeof floor == "undefined" || floor == "") {
+                                                        msg.innerHTML = "Please select a floor.";
+                                                        msg.setAttribute("class", "card-text d-block");
+                                                        loading.setAttribute("class", "row d-none");
+                                                    }  else {
+                                                        msg.setAttribute("class", "card-text d-none");
+                                                    }
+                                                });
+                                                msg.innerHTML = "";
+                                            }
                                             for (let j = 0; j < librariesDropdownItems.length; j++) {
                                                 librariesDropdownItems[j].addEventListener('click', function () {
-                                                    library_id = this.id;
+                                                    libArr.push(this.id);
+                                                    library_id1 = libArr[libArr.length - 1];
                                                     var dropDownBtnLib = document.getElementById('dropdownMenuButtonLib');
                                                     dropDownBtnLib.innerText = this.value;
                                                     library = this.value;
@@ -467,7 +567,7 @@ picker = new Pikaday({
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">`;
                                                         for (let el of libraries){
-                                                            if (el.id == library_id){
+                                                            if (el.id == library_id1){
                                                                 var numOfFloors = el.floors;
                                                             }
                                                         }
@@ -484,7 +584,6 @@ picker = new Pikaday({
                                                                 dropDownBtnFloor.innerText = "Floor " + this.id;
                                                                     if (selection == "Section"){
                                                                         var specificationsDropdown3 = document.getElementById("specificationsDropdown3");
-                                                                        msg.innerHTML = text;
                                                                         specificationsDropdown3.addEventListener("click", function (){
                                                                             var string = msg.innerHTML;
                                                                             var count = (string.match(/continue/g) || []).length;
@@ -505,7 +604,7 @@ picker = new Pikaday({
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">`;
                                                                         postData = {
-                                                                            "library_id": library_id,
+                                                                            "library_id": library_id1,
                                                                             "floor": floor
                                                                         }
                                                                         fetchData('GET', libraryHost+"/get_sections_by_library_floor/", postData)
@@ -523,85 +622,97 @@ picker = new Pikaday({
                                                                                         section = this.value;
                                                                                         var dropDownBtnSec = document.getElementById('dropdownMenuButtonSec');
                                                                                         dropDownBtnSec.innerText = this.value;
+                                                                                        msg.innerHTML = text;
                                                                                         msg.innerHTML += "you are blocking section " + section + " of floor " + floor + " of " + library + "! Press confirm to continue.";
                                                                                         msg.setAttribute("class", "card-text d-block");
-                                                                                        confirmBtn.setAttribute("class", "row justify-content-center d-block");
-                                                                                        confirmBtn.addEventListener("click", function () {
-                                                                                            msg.setAttribute("class", "card-text d-none");
-                                                                                            loading.setAttribute("class", "row d-block");
-                                                                                            specificationsDropdown.innerHTML="";
-                                                                                            specificationsDropdown2.innerHTML="";
-                                                                                            specificationsDropdown3.innerHTML="";
-                                                                                            postData = {
-                                                                                                "library_id": library_id,
-                                                                                                "floor": floor,
-                                                                                                "section": section_id
-                                                                                            }
-                                                                                            fetchData('GET', libraryHost+"/get_seats_by_library_floor_section/",postData)
-                                                                                                .then(data => {
-                                                                                                    var sectionReservations = [];
-                                                                                                    var seats = data.seats;
+                                                                                    });
+                                                                                    msg.setAttribute("class", "card-text d-none");
+                                                                                    if (typeof section_id == "undefined" || section_id == "") {
+                                                                                        msg.innerHTML = "Please select a section.";
+                                                                                        msg.setAttribute("class", "card-text d-block");
+                                                                                    }
+                                                                                }
+                                                                                msg.innerHTML = "";
+                                                                                confirmBtn.setAttribute("class", "row justify-content-center d-block");
+                                                                                confirmBtn.addEventListener("click", function () {
+                                                                                    if (typeof library_id1 == "undefined" || library_id1 == "") {
+                                                                                        msg.innerHTML = "Please select a library.";
+                                                                                        msg.setAttribute("class", "card-text d-block");
+                                                                                    } else if (typeof floor == "undefined" || floor == "") {
+                                                                                        msg.innerHTML = "Please select a floor.";
+                                                                                        msg.setAttribute("class", "card-text d-block");
+                                                                                    } else if (typeof section_id == "undefined" || section_id == "") {
+                                                                                        msg.innerHTML = "Please select a section.";
+                                                                                        msg.setAttribute("class", "card-text d-block");
+                                                                                    } else {
+                                                                                        msg.setAttribute("class", "card-text d-none");
+                                                                                        specificationsDropdown.innerHTML="";
+                                                                                        specificationsDropdown2.innerHTML="";
+                                                                                        specificationsDropdown3.innerHTML="";
+                                                                                        postData = {
+                                                                                            "library_id": library_id1,
+                                                                                            "floor": floor,
+                                                                                            "section": section_id
+                                                                                        }
+                                                                                        fetchData('GET', libraryHost+"/get_seats_by_library_floor_section/",postData)
+                                                                                            .then(data => {
+                                                                                                var sectionReservations = [];
+                                                                                                var seats = data.seats;
+                                                                                                if (typeof seats != "undefined"){
                                                                                                     for (seat of seats){
                                                                                                         var sectionReservationJSON = {"student_id": user.user_id, "library_id": seat.library_id, "seat_id": seat.id, "floor": seat.floor, "section": seat.section, "start": isoDTFrom, "end": isoDTTo};
                                                                                                         sectionReservations.push(sectionReservationJSON);
                                                                                                     }
-                                                                                                    create_reservation_bulk(sectionReservations);
-                                                                                                });
-                                                                                        });
-                                                                                    });
-                                                                                }
-                                                                            });
-                                                                    }  else {
-                                                                                msg.innerHTML += "you are blocking floor " + floor + " of " + library + "! Press confirm to continue.";
-                                                                                msg.setAttribute("class", "card-text d-block");
-                                                                                confirmBtn.setAttribute("class", "row justify-content-center d-block")
-                                                                                confirmBtn.addEventListener("click", function () {
-                                                                                    msg.setAttribute("class", "card-text d-none");
-                                                                                    loading.setAttribute("class", "row d-block");
-                                                                                    specificationsDropdown.innerHTML="";
-                                                                                    specificationsDropdown2.innerHTML="";
-                                                                                    postData = {
-                                                                                        "library_id": library_id,
-                                                                                        "floor": floor
+                                                                                                    if (selection == "Section") {
+                                                                                                        loading.setAttribute("class", "row d-block");
+                                                                                                        create_reservation_bulk(sectionReservations);
+                                                                                                    }
+                                                                                                }
+                                                                                            });
                                                                                     }
-                                                                                    fetchData('GET', libraryHost+"/get_seats_by_library_floor/",postData)
-                                                                                        .then(data => {
-                                                                                            var floorReservations = [];
-                                                                                            var seats = data.seats;
-                                                                                            for (seat of seats){
-                                                                                                var floorReservationJSON = {"student_id": user.user_id, "library_id": seat.library_id, "seat_id": seat.id, "floor": seat.floor, "section": seat.section, "start": isoDTFrom, "end": isoDTTo};
-                                                                                                floorReservations.push(floorReservationJSON);
-                                                                                            }
-                                                                                            create_reservation_bulk(floorReservations);
-                                                                                        });
                                                                                 });
+                                                                                msg.innerHTML = "";
+                                                                            });
                                                                     }
+                                                                    msg.innerHTML = "";
+                                                                    msg.innerHTML = text;
+                                                                    msg.innerHTML += "you are blocking floor " + floor + " of " + library + "! Press confirm to continue.";
+                                                                    msg.setAttribute("class", "card-text d-block");
                                                             });
                                                         }
-                                                    }  else {
-                                                        for (let j = 0; j < librariesDropdownItems.length; j++) {
-                                                            librariesDropdownItems[j].addEventListener('click', function () {
-                                                                msg.innerHTML += "you are blocking " + library + "! Press confirm to continue.";
-                                                                msg.setAttribute("class", "card-text d-block");
-                                                                confirmBtn.setAttribute("class", "row justify-content-center d-block");
-                                                                confirmBtn.addEventListener("click", function () {
+                                                        if (selection == "Floor"){
+                                                            confirmBtn.setAttribute("class", "row justify-content-center d-block")
+                                                            confirmBtn.addEventListener("click", function () {
+                                                                if (typeof library_id1 == "undefined" || library_id1 == "") {
+                                                                    msg.innerHTML = "Please select a library.";
+                                                                    msg.setAttribute("class", "card-text d-block");
+                                                                } else if (typeof floor == "undefined" || floor == "") {
+                                                                    msg.innerHTML = "Please select a floor.";
+                                                                    msg.setAttribute("class", "card-text d-block");
+                                                                } else {
                                                                     msg.setAttribute("class", "card-text d-none");
-                                                                    loading.setAttribute("class", "row d-block");
                                                                     specificationsDropdown.innerHTML="";
+                                                                    specificationsDropdown2.innerHTML="";
                                                                     postData = {
-                                                                        "library_id": library_id,
+                                                                        "library_id": library_id1,
+                                                                        "floor": floor
                                                                     }
-                                                                    fetchData('GET', libraryHost+"/get_seats_by_library/",postData)
+                                                                    fetchData('GET', libraryHost+"/get_seats_by_library_floor/",postData)
                                                                         .then(data => {
-                                                                            var libraryReservations = [];
+                                                                            var floorReservations = [];
                                                                             var seats = data.seats;
-                                                                            for (seat of seats){
-                                                                                var libraryReservationJSON = {"student_id": user.user_id, "library_id": seat.library_id, "seat_id": seat.id, "floor": seat.floor, "section": seat.section, "start": isoDTFrom, "end": isoDTTo};
-                                                                                libraryReservations.push(libraryReservationJSON);
+                                                                            if (typeof seats != "undefined"){
+                                                                                for (seat of seats){
+                                                                                    var floorReservationJSON = {"student_id": user.user_id, "library_id": seat.library_id, "seat_id": seat.id, "floor": seat.floor, "section": seat.section, "start": isoDTFrom, "end": isoDTTo};
+                                                                                    floorReservations.push(floorReservationJSON);
+                                                                                }
+                                                                                if (selection == "Floor") {
+                                                                                    loading.setAttribute("class", "row d-block");
+                                                                                    create_reservation_bulk(floorReservations);
+                                                                                }
                                                                             }
-                                                                            create_reservation_bulk(libraryReservations);
                                                                         });
-                                                                });
+                                                                }
                                                             });
                                                         }
                                                     }
@@ -609,6 +720,9 @@ picker = new Pikaday({
                                             }
                                         });
                                 }
+                                library_id1 = "";
+                                section_id = "";
+                                floor = "";
                             });
                         }
                         fromD = "";
